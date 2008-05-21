@@ -424,7 +424,7 @@ class Color:
 
     def __eq__(self, other):
         try:
-            if not isinstance(other, Color):
+            if isinstance(other, Color):
                 return (self.__rgb==other.__rgb) and (self.__a==other.__a)
                 
             if len(other) != 4:
@@ -1084,10 +1084,10 @@ class Color:
         
         # Return the 'closest' value according to the alt flag
         if alt:
-            if (sc-l) > (u-sc): return l/100.0
+            if (sc-l) >= (u-sc): return l/100.0
             else: return u/100.0
         else:
-            if (sc-l) > (u-sc): return u/100.0
+            if (sc-l) >= (u-sc): return u/100.0
             else: return l/100.0
 
     @staticmethod
@@ -1625,7 +1625,7 @@ class Color:
             A tuple of two grapefruit.Color instances which are the two
             web safe colors closest this one.
 
-        >>> c = Color.NewFromRgb(1.0, 0.5, 0.0)
+        >>> c = Color.NewFromRgb(1.0, 0.45, 0.0)
         >>> c1, c2 = c.WebSafeDither()
         >>> str(c1)
         '(1, 0.4, 0, 1)'
