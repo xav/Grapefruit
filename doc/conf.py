@@ -10,6 +10,8 @@
 #
 # All configuration values have a default value; values that are commented out
 # serve to show the default value.
+# 
+# $Id$
 
 import sys, os
 
@@ -44,7 +46,7 @@ copyright = '2008, Xavier Basty <xbasty@gmail.com>'
 # The short X.Y version.
 version = '0.1'
 # The full version, including alpha/beta/rc tags.
-release = '0.1.2'
+release = '0.1a1'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

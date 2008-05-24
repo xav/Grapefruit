@@ -1,0 +1,26 @@
+2008-05-24
+
+  Released 0.1a1
+  - Convert the documentation to Sphinx
+  - Completed the unit tests
+  - Fixed some stupid typos
+
+2008-05-22
+
+  - Refactored pretty much everything to more standard "Python coding style".
+  - Replaced the global variables by Color properties.
+  - Moved the module functions to static methods of Color.
+  - Completed the CIE white point dictionary to include all the standard
+    illuminants.
+  - Added doctest for all the functions.
+  - Fixed the conversions factors to get better results (more exact and
+    more symmetric).
+  - Changed the range of the L component from [0~1] to [0~100] (as it should
+    have been).
+  - Added packaging data and setup.
+  - Changed the structure of the unit tests.
+
+2008-05-08
+
+  Released 0.1a0
+  - Initial checkin of grapefruit

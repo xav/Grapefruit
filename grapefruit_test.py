@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'xbasty@gmail.com'
-__version__ = '0.1.2'
+__version__ = '0.1a1'
 
 import unittest
 import grapefruit

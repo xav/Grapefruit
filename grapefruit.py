@@ -18,8 +18,8 @@
 '''GrapeFruit - Color manipulation in Python'''
 
 # $Id$
-__author__ = 'Xavier Basty (xbasty@gmail.com)'
-__version__ = '0.1.2'
+__author__ = 'Xavier Basty <xbasty@gmail.com>'
+__version__ = '0.1a1'
 
 
 # The default white reference, use 2° Standard Observer, D65 (daylight)

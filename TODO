@@ -1,0 +1,10 @@
+GrapeFruit's TODO list
+----------------------
+
+Patches and bug reports are welcome, just please keep the style consistent
+with the original source.
+
+* grapefruit_test isn't much more that a copy of the doctests right now.
+  Complete it with real unit tests that better define the module behavior.
+
+* Add sRGB <-> AdobeRGB conversion.
