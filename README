@@ -44,6 +44,10 @@ Check out the latest development version anonymously with::
 Documentation
 ===============
 
+You can download a compiled version of the documentation at:
+
+  http://http://code.google.com/p/grapefruit/downloads/list?q=label:Type-Docs
+
 The documentation is generated from reStructuredText sources by Sphinx.
 If you need to build it, go into the doc folder and run::
 
@@ -51,7 +55,7 @@ If you need to build it, go into the doc folder and run::
 
 Or, if you're running windows::
 
-  sphinx-build . _build\
+  makedoc.cmd
 
 
 License
