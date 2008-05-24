@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'Xavier Basty (xbasty@gmail.com)'
-__version__ = '0.1-devel'
+__version__ = '0.1.2'
 
 
 # The default white reference, use 2° Standard Observer, D65 (daylight)
@@ -514,61 +514,7 @@ class Color:
     '(0.592263, 0.458874, -0.0499818)'
     
     '''
-    y = (r * 0.29895808) + (g * 0.58660979) + (b *0.11443213)
-    i = (r * 0.59590296) - (g * 0.27405705) - (b *0.32184591)
-    q = (r * 0.21133576) - (g * 0.52263517) + (b *0.31129940)
-    return (y, i, q)
-
-  @staticmethod
-  def YiqToRgb(y, i, q):
-    '''Convert the color from YIQ coordinates to RGB.
-    
-    Parameters:
-      :y:
-        Tte Y component value [0...1]
-      :i:
-        The I component value [0...1]
-      :q:
-        The Q component value [0...1]
-    
-    Returns:
-      The color as an (r, g, b) tuple in the range:
-      r[0...1],
-      g[0...1],
-      b[0...1]
-    
-    >>> '(%g, %g, %g)' % Color.YiqToRgb(0.592263, 0.458874, -0.0499818)
-    '(1, 0.5, 5.442e-007)'
-    
-    '''
-    r = y + (i * 0.9562) + (q * 0.6210)
-    g = y - (i * 0.2717) - (q * 0.6485)
-    b = y - (i * 1.1053) + (q * 1.7020)
-    return (r, g, b)
-
-  @staticmethod
-  def RgbToYuv(r, g, b):
-    '''Convert the color from RGB coordinates to YUV.
-    
-    Parameters:
-      :r:
-        The Red component value [0...1]
-      :g:
-        The Green component value [0...1]
-      :b:
-        The Blue component value [0...1]
-    
-    Returns:
-      The color as an (y, u, v) tuple in the range:
-      y[0...1],
-      u[-0.436...0.436],
-      v[-0.615...0.615]
-    
-    >>> '(%g, %g, %g)' % Color.RgbToYuv(1, 0.5, 0)
-    '(0.5925, -0.29156, 0.357505)'
-    
-    '''
-    y =  (r * 0.29900) + (g * 0.58700) + (b * 0.11400)
+    y = (r * 0.29895808) + (g * 0.58660979) + (b *1400)
     u = -(r * 0.14713) - (g * 0.28886) + (b * 0.43600)
     v =  (r * 0.61500) - (g * 0.51499) - (b * 0.10001)
     return (y, u, v)
