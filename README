@@ -51,7 +51,7 @@ If you need to build it, go into the doc folder and run::
 
 Or, if you're running windows::
 
-  sphinx-build . .\
+  sphinx-build . _build\
 
 
 License
