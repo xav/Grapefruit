@@ -32,7 +32,7 @@ METADATA = dict(
   description = 'A module to manipulate color information easily.',
   license = 'Apache License 2.0',
   url = 'http://code.google.com/p/grapefruit/',
-  download_url = 'http://grapefruit.googlecode.com/files/grapefruit-%s.py' % \
+  download_url = 'http://grapefruit.googlecode.com/files/grapefruit-%s.tar.gz' % \
     __version__,
   keywords ='color conversion',
 )
