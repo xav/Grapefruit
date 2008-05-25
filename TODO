@@ -8,3 +8,5 @@ with the original source.
   Complete it with real unit tests that better define the module behavior.
 
 * Add sRGB <-> AdobeRGB conversion.
+
+* Add a way to control the shape of the tetrad (rectangularity)

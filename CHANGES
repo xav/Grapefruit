@@ -1,5 +1,11 @@
 2008-05-24
 
+  - Fixed the HSL->RGB conversion
+    (the modulo in the hue conversion was 60 instead of 6.0!)
+    Updated the unit tests (which were wrong!)
+
+2008-05-24
+
   Released 0.1a1
   - Convert the documentation to Sphinx
   - Completed the unit tests

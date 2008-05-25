@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'Xavier Basty <xbasty@gmail.com>'
-__version__ = '0.1a1'
+__version__ = '0.1a2'
 
 
 # The base package metadata to be used by both distutils and setuptools

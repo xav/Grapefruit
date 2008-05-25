@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'xbasty@gmail.com'
-__version__ = '0.1a1'
+__version__ = '0.1a2'
 
 import unittest
 import grapefruit
@@ -36,17 +36,22 @@ class GrapeFruitTestCase(unittest.TestCase):
       
       for f, s in zip(first, second):
         if abs(s-f) > diff:
-          raise self.failureException, (msg or 'The difference between %r and %r is more than %f.' % (f, s, diff))
+          raise self.failureException, (msg or "%r != %r @ %f" % (first, second, diff))
     elif abs(second-first) > diff:
-      raise self.failureException, (msg or 'The difference between %r and %r is more than %f.' % (first, second, diff))
+      raise self.failureException, (msg or "%r != %r @ %f" % (first, second, diff))
   assertNear = failUnlessNear
 
 class ConversionTest(GrapeFruitTestCase):
   '''Test the static color conversion methods.'''
 
   def testRgbHsl(self):
-    self.assertEqual((30.0, 1.0, 0.5), grapefruit.Color.RgbToHsl(1, 0.5, 0))
-    self.assertEqual((1, 0.5, 0), grapefruit.Color.HslToRgb(30.0, 1.0, 0.5))
+    self.assertNear((30.0, 1.0, 0.5), grapefruit.Color.RgbToHsl(1, 0.5, 0))
+    self.assertNear((20.0, 1.0, 0.625), grapefruit.Color.RgbToHsl(1, 0.5, 0.25)) #ff8040
+    self.assertNear((40.0, 1.0, 0.375), grapefruit.Color.RgbToHsl(0.75, 0.5, 0)) #bf8000
+
+    self.assertNear((1, 0.5, 0), grapefruit.Color.HslToRgb(30.0, 1.0, 0.5))
+    self.assertNear((1, 0.5, 0.25), grapefruit.Color.HslToRgb(20.0, 1.0, 0.625))
+    self.assertNear((0.75, 0.5, 0), grapefruit.Color.HslToRgb(40.0, 1.0, 0.375))
   
   def testRgbHsv(self):
     self.assertEqual((30.0, 1.0, 1.0), grapefruit.Color.RgbToHsv(1, 0.5, 0))
@@ -276,19 +281,19 @@ class ColorTest(GrapeFruitTestCase):
   def testTriadicScheme(self):
     triad = (
       (0.0, 1.0, 0.5, 1.0),
-      (0.0, 0.0, 1.0, 1.0))
+      (0.5, 0.0, 1.0, 1.0))
     self.assertEqual(self.rgbCol.TriadicScheme(), triad)
   
   def testTetradicScheme(self):
     tetrad = (
       (0.0, 1.0, 0.0, 1.0),
       (0.0, 0.5, 1.0, 1.0),
-      (0.0, 0.0, 1.0, 1.0))
+      (1.0, 0.0, 1.0, 1.0))
     self.assertEqual(self.rgbCol.TetradicScheme(), tetrad)
   
   def testAnalogousScheme(self):
     scheme = (
-      (0.0, 0.0, 0.5, 1.0),
+      (1.0, 0.0, 0.5, 1.0),
       (0.5, 1.0, 0.0, 1.0))
     self.assertEqual(self.rgbCol.AnalogousScheme(), scheme)
   

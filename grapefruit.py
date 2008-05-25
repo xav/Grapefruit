@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'Xavier Basty <xbasty@gmail.com>'
-__version__ = '0.1a1'
+__version__ = '0.1a2'
 
 
 # The default white reference, use 2° Standard Observer, D65 (daylight)
@@ -369,7 +369,7 @@ class Color:
 
   @staticmethod
   def _HueToRgb(n1, n2, h):
-    h %= 60.0
+    h %= 6.0
     if h < 1.0: return n1 + ((n2-n1) * h)
     if h < 3.0: return n2
     if h < 4.0: return n1 + ((n2-n1) * (4.0 - h))
