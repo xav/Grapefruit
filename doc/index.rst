@@ -27,7 +27,7 @@ If you are only interested in converting you colors from one system to another,
 you can store them using regular tuples instead of :class:`Color` instances.
 You can then use the class static methods to perform the conversions.
 
-:class:`Color` stores both the RGB and HSV representation of the color.
+:class:`Color` stores both the RGB and HSL representation of the color.
 This makes possible to keep the hue intact when the color is a pure white
 due to its lightness.
 However, certain operations work only with the RGB values, and might then
