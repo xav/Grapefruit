@@ -29,6 +29,28 @@ _oneThird = 1.0 / 3
 _srgbGammaCorrInv = 0.03928 / 12.92
 _sixteenHundredsixteenth = 16.0 / 116
 
+_RybWheel = (
+    0,  26,  52,
+   83, 120, 130,
+  141, 151, 162,
+  177, 190, 204,
+  218, 232, 246,
+  261, 275, 288,
+  303, 317, 330,
+  338, 345, 352,
+  360)
+
+_RgbWheel = (
+    0,   8,  17,
+   26,  34,  41,
+   48,  54,  60,
+   81, 103, 123,
+  138, 155, 171,
+  187, 204, 219,
+  234, 251, 267,
+  282, 298, 329,
+  360)
+
 class Color:
   '''Hold a color value.
   
@@ -1046,6 +1068,48 @@ class Color:
     return (v, v, v)
 
   @staticmethod
+  def RgbToRyb(hue):
+    '''Maps a hue on the RGB color wheel to Itten's RYB wheel.
+    
+    Parameters:
+      :hue:
+        The hue on the RGB color wheel [0...360]
+    
+    Returns:
+      An approximation of the corresponding hue on Itten's RYB wheel.
+    
+    >>> Color.RgbToRyb(15)
+    26
+    
+    '''
+    d = hue % 15
+    i = int(hue / 15)
+    x0 = _RybWheel[i]
+    x1 = _RybWheel[i+1]
+    return x0 + (x1-x0) * d / 15
+    
+  @staticmethod
+  def RybToRgb(hue):
+    '''Maps a hue on Itten's RYB color wheel to the standard RGB wheel.
+    
+    Parameters:
+      :hue:
+        The hue on Itten's RYB color wheel [0...360]
+    
+    Returns:
+      An approximation of the corresponding hue on the standard RGB wheel.
+    
+    >>> Color.RybToRgb(15)
+    8
+    
+    '''
+    d = hue % 15
+    i = int(hue / 15)
+    x0 = _RgbWheel[i]
+    x1 = _RgbWheel[i+1]
+    return x0 + (x1-x0) * d / 15
+
+  @staticmethod
   def NewFromRgb(r, g, b, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed RGB values.
     
@@ -1569,8 +1633,14 @@ class Color:
     '''
     h, s, l = self.__hsl
     return Color((h, s, min(l + level, 1)), 'hsl', self.__a, self.__wref)
+  
+  def Saturate(self, level):
+    pass
 
-  def ComplementaryColor(self):
+  def Desaturate(self, level):
+    pass
+  
+  def ComplementaryColor(self, mode='rgb'):
     '''Create a new instance which is the complementary color of this one.
     
     Returns:
@@ -1603,10 +1673,16 @@ class Color:
     return (Color(Color.RgbToWebSafe(*self.__rgb), 'rgb', self.__a, self.__wref),
         Color(Color.RgbToWebSafe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
 
-  def TriadicScheme(self, angle=120):
-    '''Return two colors forming a triad with this one.
+  def Gradient(self, target, nbSteps):
+    pass
+
+  def MonochromeScheme(self):
+    pass
+
+  def TriadicScheme(self, angle=120, mode='rgb'):
+    '''Return two colors forming a triad or a split complementary with this one.
     
-    Args:
+    Parameters:
       :angle:
         The angle between the hues of the complimentary colors and
         those of the created colors, the default value making a regular triad.
@@ -1636,8 +1712,13 @@ class Color:
     return (Color(((h - angle) % 360, s,  l), 'hsl', self.__a, self.__wref),
         Color(((h + angle) % 360, s,  l), 'hsl', self.__a, self.__wref))
 
-  def TetradicScheme(self):
+  def TetradicScheme(self, angle=60, mode='rgb'):
     '''Return three colors froming a tetrad with this one.
+    
+    Parameters:
+      :angle:
+        The angle to add to the adjacent colors hues.
+        Using 0 there makes the tetrad a square on the wheel.
     
     Returns:
       A tuple of three grapefruit.Color forming a color tetrad with
@@ -1655,11 +1736,11 @@ class Color:
     
     '''
     h, s, l = self.__hsl
-    return (Color(((h + 90) % 360, s,  l), 'hsl', self.__a, self.__wref),
+    return (Color(((h + 90 + angle) % 360, s,  l), 'hsl', self.__a, self.__wref),
         Color(((h + 180) % 360, s,  l), 'hsl', self.__a, self.__wref),
-        Color(((h + 270) % 360, s,  l), 'hsl', self.__a, self.__wref))
+        Color(((h + 270 + angle) % 360, s,  l), 'hsl', self.__a, self.__wref))
 
-  def AnalogousScheme(self, angle=60):
+  def AnalogousScheme(self, angle=60, mode='rgb'):
     '''Return two colors analogous to this one.
     
     Args:
