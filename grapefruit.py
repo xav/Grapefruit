@@ -1635,26 +1635,45 @@ class Color:
     return Color((h, s, min(l + level, 1)), 'hsl', self.__a, self.__wref)
   
   def Saturate(self, level):
-    pass
-
-  def Desaturate(self, level):
-    pass
-  
-  def ComplementaryColor(self, mode='rgb'):
-    '''Create a new instance which is the complementary color of this one.
+    '''Create a new instance based on this one but more saturated.
+    
+    Parameters:
+      :level:
+        The amount by which the color should be saturated to produce
+        the new one [0...1].
     
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor()
-    (0.0, 0.5, 1.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor().hsl
-    (210, 1, 0.5)
+    >>> Color.NewFromHsl(30, 0.5, 0.5).Saturate(0.25)
+    (0.875, 0.5, 0.125, 1.0)
+    >>> Color.NewFromHsl(30, 0.5, 0.5).Saturate(0.25).hsl
+    (30, 0.75, 0.5)
     
     '''
     h, s, l = self.__hsl
-    return Color(((h + 180) % 360, s, l), 'hsl', self.__a, self.__wref)
+    return Color((h, min(s + level, 1), l), 'hsl', self.__a, self.__wref)
 
+  def Desaturate(self, level):
+    '''Create a new instance based on this one but less saturated.
+    
+    Parameters:
+      :level:
+        The amount by which the color should be desaturated to produce
+        the new one [0...1].
+    
+    Returns:
+      A grapefruit.Color instance.
+
+    >>> Color.NewFromHsl(30, 0.5, 0.5).Desaturate(0.25)
+    (0.625, 0.5, 0.375, 1.0)
+    >>> Color.NewFromHsl(30, 0.5, 0.5).Desaturate(0.25).hsl
+    (30, 0.25, 0.5)
+    
+    '''
+    h, s, l = self.__hsl
+    return Color((h, max(s - level, 0), l), 'hsl', self.__a, self.__wref)
+  
   def WebSafeDither(self):
     '''Return the two websafe colors nearest to this one.
     
@@ -1670,22 +1689,83 @@ class Color:
     '(1, 0.6, 0, 1)'
     
     '''
-    return (Color(Color.RgbToWebSafe(*self.__rgb), 'rgb', self.__a, self.__wref),
-        Color(Color.RgbToWebSafe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
+    return (
+      Color(Color.RgbToWebSafe(*self.__rgb), 'rgb', self.__a, self.__wref),
+      Color(Color.RgbToWebSafe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
 
   def Gradient(self, target, nbSteps):
     pass
 
-  def MonochromeScheme(self):
-    pass
+  def ComplementaryColor(self, mode='ryb'):
+    '''Create a new instance which is the complementary color of this one.
+    
+    Parameters:
+      :mode:
+        Select which color wheel to use for the generation (ryb/rgb).
+    
+    
+    Returns:
+      A grapefruit.Color instance.
 
-  def TriadicScheme(self, angle=120, mode='rgb'):
+    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor()
+    (0.0, 0.5, 1.0, 1.0)
+    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor().hsl
+    (210, 1, 0.5)
+    
+    '''
+    h, s, l = self.__hsl
+
+    if mode == 'ryb': h = Color.RgbToRyb(h)
+    h = (h+180)%360
+    if mode == 'ryb': h = Color.RybToRgb(h)
+    
+    return Color((h, s, l), 'hsl', self.__a, self.__wref)
+  
+  def MonochromeScheme(self):
+    '''Return 4 colors in the same hue with varying saturation/lightness.
+    
+    Returns:
+      A tuple of 4 grapefruit.Color in the same hue as this one,
+      with varying saturation/lightness.
+
+    >>> c = Color.NewFromHsl(30, 0.5, 0.5)
+    >>> ['(%g, %g, %g)' % clr.hsl for clr in c.MonochromeScheme()]
+    ['(30, 0.2, 0.8)', '(30, 0.5, 0.3)', '(30, 0.2, 0.6)', '(30, 0.5, 0.8)']
+
+    '''
+    def _wrap(x, min, thres, plus):
+      if (x-min) < thres: return x + plus
+      else: return x-min
+
+    h, s, l = self.__hsl
+    
+    s1 = _wrap(s, 0.3, 0.1, 0.3)
+    l1 = _wrap(l, 0.5, 0.2, 0.3)
+    
+    s2 = s
+    l2 = _wrap(l, 0.2, 0.2, 0.6)
+    
+    s3 = s1
+    l3 = max(0.2, l + (1-l)*0.2)
+    
+    s4 = s
+    l4 = _wrap(l, 0.5, 0.2, 0.3)
+    
+    return (
+      Color((h, s1,  l1), 'hsl', self.__a, self.__wref),
+      Color((h, s2,  l2), 'hsl', self.__a, self.__wref),
+      Color((h, s3,  l3), 'hsl', self.__a, self.__wref),
+      Color((h, s4,  l4), 'hsl', self.__a, self.__wref))
+  
+  def TriadicScheme(self, angle=120, mode='ryb'):
     '''Return two colors forming a triad or a split complementary with this one.
     
     Parameters:
       :angle:
         The angle between the hues of the complimentary colors and
-        those of the created colors, the default value making a regular triad.
+        those of the created colors. The default value makes a regular triad.
+      :mode:
+        Select which color wheel to use for the generation (ryb/rgb).
     
     Returns:
       A tuple of two grapefruit.Color forming a color triad with
@@ -1708,17 +1788,28 @@ class Color:
     '''
     h, s, l = self.__hsl
     angle = min(angle, 120) / 2.0
+    
+    if mode == 'ryb': h = Color.RgbToRyb(h)
     h += 180
-    return (Color(((h - angle) % 360, s,  l), 'hsl', self.__a, self.__wref),
-        Color(((h + angle) % 360, s,  l), 'hsl', self.__a, self.__wref))
+    h1 = (h - angle) % 360
+    h2 = (h + angle) % 360
+    if mode == 'ryb':
+      h1 = Color.RybToRgb(h1)
+      h2 = Color.RybToRgb(h2)
+    
+    return (
+      Color((h1, s,  l), 'hsl', self.__a, self.__wref),
+      Color((h2, s,  l), 'hsl', self.__a, self.__wref))
 
-  def TetradicScheme(self, angle=60, mode='rgb'):
+  def TetradicScheme(self, angle=60, mode='ryb'):
     '''Return three colors froming a tetrad with this one.
     
     Parameters:
       :angle:
-        The angle to add to the adjacent colors hues.
-        Using 0 there makes the tetrad a square on the wheel.
+        The angle to substract from the adjacent colors hues [-90...90].
+        You can use an angle of zero to generate a square tetrad.
+      :mode:
+        Select which color wheel to use for the generation (ryb/rgb).
     
     Returns:
       A tuple of three grapefruit.Color forming a color tetrad with
@@ -1736,15 +1827,29 @@ class Color:
     
     '''
     h, s, l = self.__hsl
-    return (Color(((h + 90 + angle) % 360, s,  l), 'hsl', self.__a, self.__wref),
-        Color(((h + 180) % 360, s,  l), 'hsl', self.__a, self.__wref),
-        Color(((h + 270 + angle) % 360, s,  l), 'hsl', self.__a, self.__wref))
+
+    if mode == 'ryb': h = Color.RgbToRyb(h)
+    h1 = (h + 90 - angle) % 360
+    h2 = (h + 180) % 360
+    h3 = (h + 270 - angle) % 360
+    if mode == 'ryb':
+      h1 = Color.RybToRgb(h1)
+      h2 = Color.RybToRgb(h2)
+      h3 = Color.RybToRgb(h3)
+
+    return (
+      Color((h1, s,  l), 'hsl', self.__a, self.__wref),
+      Color((h2, s,  l), 'hsl', self.__a, self.__wref),
+      Color((h3, s,  l), 'hsl', self.__a, self.__wref))
 
   def AnalogousScheme(self, angle=60, mode='rgb'):
     '''Return two colors analogous to this one.
     
     Args:
-      angle: the angle between the hues of the created colors and this one.
+      :angle:
+        The angle between the hues of the created colors and this one.
+      :mode:
+        Select which color wheel to use for the generation (ryb/rgb).
 
     Returns:
       A tuple of grapefruit.Colors analogous to this one.
@@ -1765,11 +1870,17 @@ class Color:
     
     '''
     h, s, l = self.__hsl
+
+    if mode == 'ryb': h = Color.RgbToRyb(h)
     h += 360
     h1 = (h - angle) % 360
     h2 = (h + angle) % 360
-    return (Color(((h - angle) % 360, s,  l), 'hsl', self.__a, self.__wref),
-        Color(((h + angle) % 360, s,  l), 'hsl', self.__a, self.__wref))
+    if mode == 'ryb':
+      h1 = Color.RybToRgb(h1)
+      h2 = Color.RybToRgb(h2)
+    
+    return (Color((h1, s,  l), 'hsl', self.__a, self.__wref),
+        Color((h2, s,  l), 'hsl', self.__a, self.__wref))
 
   def AlphaBlend(self, other):
     '''Alpha-blend this color on the other one.

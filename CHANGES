@@ -1,3 +1,9 @@
+2008-05-29
+  - Added Saturate/Desaturate.
+  - Added MonochromeScheme
+  - Added the mode parameter to the generation methods to choose the
+    color wheel use for the generation (ryb/rgb).
+
 2008-05-28
   - Added the RGB<->RYB hue conversion.
   - Added an angle parameter to the tetrad scheme to control the shape of

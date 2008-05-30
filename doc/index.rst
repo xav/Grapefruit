@@ -79,6 +79,8 @@ Class content
   - :meth:`Color.PilToRgb`
   - :meth:`Color.RgbToWebSafe`
   - :meth:`Color.RgbToGreyscale`
+  - :meth:`Color.RgbToRyb`
+  - :meth:`Color.RybToRgb`
 
 - :ref:`instantiation-functions`
 
@@ -122,11 +124,19 @@ Class content
   - :meth:`Color.ColorWithLightness`
   - :meth:`Color.DarkerColor`
   - :meth:`Color.LighterColor`
-  - :meth:`Color.ComplementaryColor`
+  - :meth:`Color.Saturate`
+  - :meth:`Color.Desaturate`
   - :meth:`Color.WebSafeDither`
+
+- :ref:`generation-methods`
+
+  - :meth:`Color.ComplementaryColor`
   - :meth:`Color.TriadicScheme`
   - :meth:`Color.TetradicScheme`
   - :meth:`Color.AnalogousScheme`
+
+- :ref:`blending-methods`
+
   - :meth:`Color.AlphaBlend`
   - :meth:`Color.Blend`
 
@@ -275,6 +285,10 @@ as a :class:`Color` instance.
 
 .. automethod:: Color.RgbToGreyscale
 
+.. automethod:: Color.RgbToRyb
+
+.. automethod:: Color.RybToRgb
+
 
 
 .. _instantiation-functions:
@@ -372,13 +386,13 @@ The properties returning calculated values unless marked otherwise.
 Manipulation methods
 --------------------
 
-The manipulations methods let you do simple operations with a color.
+The manipulations methods let you create a new color by changing an existing
+color properties.
 
 .. note::
 
-   The methods **do not** modify the current instance.
-   They operations results are always return a new :class:`Color` instance, or
-   as a tuple of instances.
+   The methods **do not** modify the current Color instance. They create a
+   new instance or a tuple of new instances with the specified modifications.
 
 .. automethod:: Color.ColorWithAlpha
 
@@ -394,15 +408,49 @@ The manipulations methods let you do simple operations with a color.
 
 .. automethod:: Color.LighterColor
 
-.. automethod:: Color.ComplementaryColor
+.. automethod:: Color.Saturate
+
+.. automethod:: Color.Desaturate
 
 .. automethod:: Color.WebSafeDither
+
+
+
+.. _generation-methods:
+
+Generation methods
+------------------
+
+The generation methods let you create a color scheme by using a color as the
+start point.
+
+All the method, appart from MonochromeScheme, have a 'mode' parameter that
+let you choose which color wheel should be used to generate the scheme.
+
+The following modes are available:
+  :ryb:
+    The `RYB <http://en.wikipedia.org/wiki/RYB_color_model>`_ color wheel,
+    or *artistic color wheel*. While scientifically incorrect, it generally
+    produces better schemes than RGB.
+  :rgb:
+    The standard RGB color wheel.
+
+.. automethod:: Color.ComplementaryColor
+
+.. automethod:: Color.MonochromeScheme
 
 .. automethod:: Color.TriadicScheme
 
 .. automethod:: Color.TetradicScheme
 
 .. automethod:: Color.AnalogousScheme
+
+
+
+.. _blending-methods:
+
+Blending methods
+----------------
 
 .. automethod:: Color.AlphaBlend
 
