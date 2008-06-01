@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'Xavier Basty <xbasty@gmail.com>'
-__version__ = '0.1a2'
+__version__ = '0.1a3'
 
 
 # The default white reference, use 2° Standard Observer, D65 (daylight)
@@ -1762,8 +1762,8 @@ class Color:
     
     Parameters:
       :angle:
-        The angle between the hues of the complimentary colors and
-        those of the created colors. The default value makes a regular triad.
+        The angle between the hues of the created colors.
+        The default value makes a triad.
       :mode:
         Select which color wheel to use for the generation (ryb/rgb).
     
@@ -1842,7 +1842,7 @@ class Color:
       Color((h2, s,  l), 'hsl', self.__a, self.__wref),
       Color((h3, s,  l), 'hsl', self.__a, self.__wref))
 
-  def AnalogousScheme(self, angle=60, mode='rgb'):
+  def AnalogousScheme(self, angle=30, mode='ryb'):
     '''Return two colors analogous to this one.
     
     Args:
@@ -1905,7 +1905,7 @@ class Color:
 
     # get percentage of source alpha compared to final alpha
     if fa==0: sa = 0
-    else: sa = self.__a / other.__a
+    else: sa = min(1.0, self.__a/other.__a)
 
     # destination percentage is just the additive inverse
     da = 1.0 - sa
