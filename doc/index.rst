@@ -1,8 +1,6 @@
 .. _grapefruit-index:
 
-========================
-GrapeFruit Documentation
-========================
+.. image:: _static/GrapeFruit.png
 
 Welcome! This is the documentation for GrapeFruit |release|, 
 last updated |today|.
@@ -130,6 +128,7 @@ Class content
 
 - :ref:`generation-methods`
 
+  - :meth:`Color.Gradient`
   - :meth:`Color.ComplementaryColor`
   - :meth:`Color.TriadicScheme`
   - :meth:`Color.TetradicScheme`
@@ -424,8 +423,9 @@ Generation methods
 The generation methods let you create a color scheme by using a color as the
 start point.
 
-All the method, appart from MonochromeScheme, have a 'mode' parameter that
-let you choose which color wheel should be used to generate the scheme.
+All the method, appart from Gradient and MonochromeScheme, have a 'mode'
+parameter that let you choose which color wheel should be used to generate
+the scheme.
 
 The following modes are available:
   :ryb:
@@ -434,6 +434,8 @@ The following modes are available:
     produces better schemes than RGB.
   :rgb:
     The standard RGB color wheel.
+
+.. automethod:: Color.Gradient
 
 .. automethod:: Color.ComplementaryColor
 

@@ -1693,8 +1693,40 @@ class Color:
       Color(Color.RgbToWebSafe(*self.__rgb), 'rgb', self.__a, self.__wref),
       Color(Color.RgbToWebSafe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
 
-  def Gradient(self, target, nbSteps):
-    pass
+  def Gradient(self, target, steps=100):
+    '''Create a list with the gradient colors between this and the other color.
+    
+    Parameters:
+      :target:
+        The grapefruit.Color at the other end of the gradient.
+      :steps:
+        The number of gradients steps to create.
+    
+    
+    Returns:
+      A list of grapefruit.Color instances.
+
+    >>> c1 = Color.NewFromRgb(1.0, 0.0, 0.0, alpha=1)
+    >>> c2 = Color.NewFromRgb(0.0, 1.0, 0.0, alpha=0)
+    >>> c1.Gradient(c2, 3)
+    [(0.75, 0.25, 0.0, 0.75), (0.5, 0.5, 0.0, 0.5), (0.25, 0.75, 0.0, 0.25)]
+    
+    '''
+    gradient = []
+    rgba1 = self.__rgb + (self.__a,)
+    rgba2 = target.__rgb + (target.__a,)
+    
+    steps += 1
+    for n in xrange(1, steps):
+      d = 1.0*n/steps
+      r = (rgba1[0]*(1-d)) + (rgba2[0]*d)
+      g = (rgba1[1]*(1-d)) + (rgba2[1]*d)
+      b = (rgba1[2]*(1-d)) + (rgba2[2]*d)
+      a = (rgba1[3]*(1-d)) + (rgba2[3]*d)
+
+      gradient.append(Color((r, g, b), 'rgb', a, self.__wref))
+    
+    return gradient
 
   def ComplementaryColor(self, mode='ryb'):
     '''Create a new instance which is the complementary color of this one.
@@ -1801,7 +1833,7 @@ class Color:
       Color((h1, s,  l), 'hsl', self.__a, self.__wref),
       Color((h2, s,  l), 'hsl', self.__a, self.__wref))
 
-  def TetradicScheme(self, angle=60, mode='ryb'):
+  def TetradicScheme(self, angle=30, mode='ryb'):
     '''Return three colors froming a tetrad with this one.
     
     Parameters:
@@ -1815,15 +1847,9 @@ class Color:
       A tuple of three grapefruit.Color forming a color tetrad with
       this one.
 
-    >>> c1 = Color.NewFromHsl(30, 1, 0.5)
-    
-    >>> c2, c3, c4 = c1.TetradicScheme()
-    >>> c2.hsl
-    (120, 1, 0.5)
-    >>> c3.hsl
-    (210, 1, 0.5)
-    >>> c4.hsl
-    (300, 1, 0.5)
+    >>> col = Color.NewFromHsl(30, 1, 0.5)
+    >>> [c.hsl for c in col.TetradicScheme(mode='rgb', angle=30)]
+    [(90, 1, 0.5), (210, 1, 0.5), (270, 1, 0.5)]
     
     '''
     h, s, l = self.__hsl

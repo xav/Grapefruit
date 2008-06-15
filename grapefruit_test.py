@@ -19,7 +19,7 @@
 
 # $Id$
 __author__ = 'xbasty@gmail.com'
-__version__ = '0.1a2'
+__version__ = '0.1a3'
 
 import unittest
 import grapefruit
@@ -196,6 +196,7 @@ class ColorTest(GrapeFruitTestCase):
   def setUp(self):
     self.rgbCol = grapefruit.Color.NewFromRgb(1.0, 0.5, 0.0)
     self.hslCol = grapefruit.Color.NewFromHsl(30, 1, 0.5)
+    self.hslCol2 = grapefruit.Color.NewFromHsl(30, 0.5, 0.5)
 
   def testInit(self):
     self.assertEqual(grapefruit.Color((1.0, 0.5, 0.0)), (1.0, 0.5, 0.0, 1.0))
@@ -269,8 +270,13 @@ class ColorTest(GrapeFruitTestCase):
     self.assertNear(self.hslCol.LighterColor(0.2), (1.0, 0.7, 0.4, 1.0))
     self.assertNear(self.hslCol.LighterColor(0.2).hsl, (30, 1, 0.7))
   
-  def testComplementaryColor(self):
-    self.assertEqual(self.hslCol.ComplementaryColor().hsl, (210, 1, 0.5))
+  def testSaturate(self):
+    self.assertNear(self.hslCol2.Saturate(0.25), (0.875, 0.5, 0.125, 1.0))
+    self.assertNear(self.hslCol2.Saturate(0.25).hsl, (30, 0.75, 0.5))
+  
+  def testDesaturate(self):
+    self.assertNear(self.hslCol2.Desaturate(0.25), (0.625, 0.5, 0.375, 1.0))
+    self.assertNear(self.hslCol2.Desaturate(0.25).hsl, (30, 0.25, 0.5))
   
   def testWebSafeDither(self):
     dithered = (
@@ -278,24 +284,46 @@ class ColorTest(GrapeFruitTestCase):
       (1.0, 0.4, 0.0, 1.0))
     self.assertEqual(self.rgbCol.WebSafeDither(), dithered)
   
+  def testGradient(self):
+    gradient = [
+      (0.75, 0.25, 0.0, 1.0),
+      (0.5, 0.5, 0.0, 1.0),
+      (0.25, 0.75, 0.0, 1.0)]
+    c1 = grapefruit.Color.NewFromRgb(1.0, 0.0, 0.0)
+    c2 = grapefruit.Color.NewFromRgb(0.0, 1.0, 0.0)
+    self.assertEqual(gradient, c1.Gradient(c2, 3))
+  
+  def testComplementaryColor(self):
+    self.assertEqual(self.hslCol.ComplementaryColor(mode='rgb').hsl, (210, 1, 0.5))
+  
+  def testMonochromeScheme(self):
+    monochrome = (
+      (0.94, 0.8, 0.66, 1.0), # hsl(30, 0.7, 0.8)
+      (0.6, 0.3, 0.0, 1.0),   # hsl(30, 1, 0.3)
+      (0.88, 0.6, 0.32, 1.0), # hsl(30, 0.7, 0.6)
+      (1.0, 0.8, 0.6, 1.0))   # hsl(30, 1, 0.8)
+    scheme = self.rgbCol.MonochromeScheme()
+    for i in xrange(len(monochrome)):
+      self.assertNear(scheme[i], monochrome[i])
+  
   def testTriadicScheme(self):
     triad = (
       (0.0, 1.0, 0.5, 1.0),
       (0.5, 0.0, 1.0, 1.0))
-    self.assertEqual(self.rgbCol.TriadicScheme(), triad)
+    self.assertEqual(self.rgbCol.TriadicScheme(mode='rgb'), triad)
   
   def testTetradicScheme(self):
     tetrad = (
-      (0.0, 1.0, 0.0, 1.0),
+      (0.5, 1.0, 0.0, 1.0),
       (0.0, 0.5, 1.0, 1.0),
-      (1.0, 0.0, 1.0, 1.0))
-    self.assertEqual(self.rgbCol.TetradicScheme(), tetrad)
+      (0.5, 0.0, 1.0, 1.0))
+    self.assertEqual(self.rgbCol.TetradicScheme(mode='rgb'), tetrad)
   
   def testAnalogousScheme(self):
     scheme = (
-      (1.0, 0.0, 0.5, 1.0),
-      (0.5, 1.0, 0.0, 1.0))
-    self.assertEqual(self.rgbCol.AnalogousScheme(), scheme)
+      (1.0, 0.0, 0.0, 1.0),
+      (1.0, 1.0, 0.0, 1.0))
+    self.assertEqual(self.rgbCol.AnalogousScheme(mode='rgb'), scheme)
   
   def testAlphaBlend(self):
     c1 = grapefruit.Color.NewFromRgb(1, 0.5, 0, alpha = 0.2)

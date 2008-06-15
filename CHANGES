@@ -1,3 +1,10 @@
+2008-06-15
+  - Released 0.1a3
+  - Added Gradient
+
+2008-06-01
+  - Fixed overflow in alpha blending.
+
 2008-05-29
   - Added Saturate/Desaturate.
   - Added MonochromeScheme
