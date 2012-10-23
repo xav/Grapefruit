@@ -22,7 +22,14 @@ __author__ = 'xbasty@gmail.com'
 __version__ = '0.1a3'
 
 import unittest
+import doctest
 import grapefruit
+
+# Also run doctests.
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(grapefruit))
+    return tests
+
 
 class GrapeFruitTestCase(unittest.TestCase):
   def failUnlessNear(self, first, second, diff=9e-5, msg=None):

@@ -69,7 +69,7 @@ class Color:
   
   To get the complementary of a color:
   
-    >>> compl = col.ComplementaryColor()
+    >>> compl = col.ComplementaryColor(mode='rgb')
     >>> print compl.hsl
     (210.0, 1.0, 0.5)
   
@@ -560,7 +560,7 @@ class Color:
       b[0...1]
     
     >>> '(%g, %g, %g)' % Color.YiqToRgb(0.592263, 0.458874, -0.0499818)
-    '(1, 0.5, 5.442e-007)'
+    '(1, 0.5, 5.442e-07)'
     
     '''
     r = y + (i * 0.9562) + (q * 0.6210)
@@ -614,7 +614,7 @@ class Color:
       b[0...1]
     
     >>> '(%g, %g, %g)' % Color.YuvToRgb(0.5925, -0.2916, 0.3575)
-    '(0.999989, 0.500015, -6.3276e-005)'
+    '(0.999989, 0.500015, -6.3276e-05)'
     
     '''
     r = y + (v * 1.13983)
@@ -681,7 +681,7 @@ class Color:
       b[0...1]
     
     >>> '(%g, %g, %g)' % Color.XyzToRgb(0.488941, 0.365682, 0.0448137)
-    '(1, 0.5, 6.81883e-008)'
+    '(1, 0.5, 6.81883e-08)'
     
     '''
     r =  (x * 3.2406255) - (y * 1.5372080) - (z * 0.4986286)
@@ -1211,9 +1211,9 @@ class Color:
       A grapefruit.Color instance.
     
     >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05))
-    '(0.999902, 0.499955, -6.6905e-005, 1)'
+    '(0.999902, 0.499955, -6.6905e-05, 1)'
     >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05, 0.5))
-    '(0.999902, 0.499955, -6.6905e-005, 0.5)'
+    '(0.999902, 0.499955, -6.6905e-05, 0.5)'
 
     '''
     return Color(Color.YiqToRgb(y, i, q), 'rgb', alpha, wref)
@@ -1238,9 +1238,9 @@ class Color:
       A grapefruit.Color instance.
     
     >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575))
-    '(0.999989, 0.500015, -6.3276e-005, 1)'
+    '(0.999989, 0.500015, -6.3276e-05, 1)'
     >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575, 0.5))
-    '(0.999989, 0.500015, -6.3276e-005, 0.5)'
+    '(0.999989, 0.500015, -6.3276e-05, 0.5)'
 
     '''
     return Color(Color.YuvToRgb(y, u, v), 'rgb', alpha, wref)
@@ -1265,9 +1265,9 @@ class Color:
       A grapefruit.Color instance.
     
     >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137))
-    '(1, 0.5, 6.81883e-008, 1)'
+    '(1, 0.5, 6.81883e-08, 1)'
     >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137, 0.5))
-    '(1, 0.5, 6.81883e-008, 0.5)'
+    '(1, 0.5, 6.81883e-08, 0.5)'
 
     '''
     return Color(Color.XyzToRgb(x, y, z), 'rgb', alpha, wref)
@@ -1292,11 +1292,11 @@ class Color:
       A grapefruit.Color instance.
     
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692))
-    '(1, 0.5, 1.09491e-008, 1)'
+    '(1, 0.5, 1.09491e-08, 1)'
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, wref=Color.WHITE_REFERENCE['std_D50']))
     '(1.01238, 0.492011, -0.14311, 1)'
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5))
-    '(1, 0.5, 1.09491e-008, 0.5)'
+    '(1, 0.5, 1.09491e-08, 0.5)'
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5, Color.WHITE_REFERENCE['std_D50']))
     '(1.01238, 0.492011, -0.14311, 0.5)'
     
@@ -1739,9 +1739,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor()
+    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb')
     (0.0, 0.5, 1.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor().hsl
+    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb').hsl
     (210, 1, 0.5)
     
     '''
@@ -1805,13 +1805,13 @@ class Color:
 
     >>> c1 = Color.NewFromHsl(30, 1, 0.5)
     
-    >>> c2, c3 = c1.TriadicScheme()
+    >>> c2, c3 = c1.TriadicScheme(mode='rgb')
     >>> c2.hsl
     (150.0, 1, 0.5)
     >>> c3.hsl
     (270.0, 1, 0.5)
     
-    >>> c2, c3 = c1.TriadicScheme(40)
+    >>> c2, c3 = c1.TriadicScheme(angle=40, mode='rgb')
     >>> c2.hsl
     (190.0, 1, 0.5)
     >>> c3.hsl
@@ -1882,13 +1882,13 @@ class Color:
 
     >>> c1 = Color.NewFromHsl(30, 1, 0.5)
     
-    >>> c2, c3 = c1.AnalogousScheme()
+    >>> c2, c3 = c1.AnalogousScheme(angle=60, mode='rgb')
     >>> c2.hsl
     (330, 1, 0.5)
     >>> c3.hsl
     (90, 1, 0.5)
     
-    >>> c2, c3 = c1.AnalogousScheme(10)
+    >>> c2, c3 = c1.AnalogousScheme(angle=10, mode='rgb')
     >>> c2.hsl
     (20, 1, 0.5)
     >>> c3.hsl
