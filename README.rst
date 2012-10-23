@@ -50,7 +50,7 @@ Documentation
 
 You can download a compiled version of the documentation at:
 
-  http://http://code.google.com/p/grapefruit/downloads/list?q=label:Type-Docs
+  https://github.com/xav/Grapefruit/downloads
 
 The documentation is generated from reStructuredText sources by Sphinx.
 If you need to build it, go into the doc folder and run::
