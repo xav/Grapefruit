@@ -17,6 +17,8 @@
 
 '''GrapeFruit - Color manipulation in Python'''
 
+from __future__ import division
+
 # $Id$
 __author__ = 'Xavier Basty <xbasty@gmail.com>'
 __version__ = '0.1a3'
@@ -343,6 +345,10 @@ class Color:
   def __len__(self):
     return 4
 
+  def __GetIsLegal(self):
+    return all(0.0 <= v <= 1.0 for v in self)
+  isLegal = property(fget=__GetIsLegal, doc='Boolean indicating whether the color is within the legal gamut.')
+
   @staticmethod
   def RgbToHsl(r, g, b):
     '''Convert the color from RGB coordinates to HSL.
@@ -453,10 +459,10 @@ class Color:
       v[0...1]
     
     >>> Color.RgbToHsv(1, 0.5, 0)
-    (30.0, 1, 1)
+    (30.0, 1.0, 1.0)
     
     '''
-    v = max(r, g, b)
+    v = float(max(r, g, b))
     d = v - min(r, g, b)    
     if d==0: return (0.0, 0.0, v)
     s = d / v
@@ -1079,7 +1085,7 @@ class Color:
       An approximation of the corresponding hue on Itten's RYB wheel.
     
     >>> Color.RgbToRyb(15)
-    26
+    26.0
     
     '''
     d = hue % 15
@@ -1100,7 +1106,7 @@ class Color:
       An approximation of the corresponding hue on the standard RGB wheel.
     
     >>> Color.RybToRgb(15)
-    8
+    8.0
     
     '''
     d = hue % 15

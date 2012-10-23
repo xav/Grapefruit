@@ -165,7 +165,14 @@ class NewFromTest(GrapeFruitTestCase):
     self.assertNear(c, (1, 0.5, 0, 0.5))
     c = grapefruit.Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5, grapefruit.Color.WHITE_REFERENCE["std_D50"])
     self.assertNear(c, (1.0123754, 0.492012, -0.143110, 0.5))
-  
+
+  def testNewFromLabInteger(self):
+      # Allow specifying lightness as an integer.
+      lab = (60, 0.3, 0.3)
+      c = grapefruit.Color.NewFromLab(*lab)
+      self.assertNear(c.lab, lab)
+      self.assertTrue(c.isLegal)
+
   def testNewFromCmy(self):
     c = grapefruit.Color.NewFromCmy(0, 0.5, 1)
     self.assertEqual(c, (1, 0.5, 0, 1.0))
