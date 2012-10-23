@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-#
 
 # Copyright (c) 2008, Xavier Basty
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,30 +55,30 @@ _RgbWheel = (
 
 class Color:
   '''Hold a color value.
-  
+
   Example usage:
-  
+
   To create an instance of the grapefruit.Color from RGB values:
-  
+
     >>> import grapefruit
     >>> r, g, b = 1, 0.5, 0
     >>> col = grapefruit.Color.NewFromRgb(r, g, b)
-  
+
   To get the values of the color in another colorspace:
-  
+
     >>> h, s, v = col.hsv
     >>> l, a, b = col.lab
-  
+
   To get the complementary of a color:
-  
+
     >>> compl = col.ComplementaryColor(mode='rgb')
     >>> print compl.hsl
     (210.0, 1.0, 0.5)
-  
+
   To directly convert RGB values to their HSL equivalent:
-  
+
     >>> h, s, l = Color.RgbToHsl(r, g, b)
-    
+
   '''
 
   WHITE_REFERENCE = {
@@ -122,7 +122,7 @@ class Color:
     'sup_F10'     : (0.99001, 1.00000, 0.83134),
     'sup_F11'     : (1.03820, 1.00000, 0.65555),
     'sup_F12'     : (1.11428, 1.00000, 0.40353)}
-  
+
   NAMED_COLOR = {
     'aliceblue':            '#f0f8ff',
     'antiquewhite':         '#faebd7',
@@ -274,7 +274,7 @@ class Color:
 
   def __init__(self, values, mode='rgb', alpha=1.0, wref=_DEFAULT_WREF):
     '''Instantiate a new grapefruit.Color object.
-    
+
     Parameters:
       :values:
         The values of this color, in the specified representation.
@@ -308,7 +308,7 @@ class Color:
     try:
       if isinstance(other, Color):
         return (self.__rgb==other.__rgb) and (self.__a==other.__a)
-        
+
       if len(other) != 4:
         return False
       rgba = self.__rgb + (self.__a,)
@@ -323,19 +323,19 @@ class Color:
 
   def __str__(self):
     '''A string representation of this grapefruit.Color instance.
-    
+
     Returns:
       The RGBA representation of this grapefruit.Color instance.
-    
+
     '''
     return '(%g, %g, %g, %g)' % (self.__rgb + (self.__a,))
 
   def __unicode__(self):
     '''A unicode string representation of this grapefruit.Color instance.
-    
+
     Returns:
       The RGBA representation of this grapefruit.Color instance.
-    
+
     '''
     return u'(%g, %g, %g, %g)' % (self.__rgb + (self.__a,))
 
@@ -352,7 +352,7 @@ class Color:
   @staticmethod
   def RgbToHsl(r, g, b):
     '''Convert the color from RGB coordinates to HSL.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -360,7 +360,7 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (h, s, l) tuple in the range:
       h[0...360],
@@ -369,7 +369,7 @@ class Color:
 
     >>> Color.RgbToHsl(1, 0.5, 0)
     (30.0, 1.0, 0.5)
-    
+
     '''
     minVal = min(r, g, b)       # min RGB value
     maxVal = max(r, g, b)       # max RGB value
@@ -391,7 +391,7 @@ class Color:
       h = 2.0 + dr - db
     else:
       h = 4.0 + dg - dr
-    
+
     h = (h*60.0) % 360.0
     return (h, s, l)
 
@@ -406,7 +406,7 @@ class Color:
   @staticmethod
   def HslToRgb(h, s, l):
     '''Convert the color from HSL coordinates to RGB.
-    
+
     Parameters:
       :h:
         The Hue component value [0...1]
@@ -414,16 +414,16 @@ class Color:
         The Saturation component value [0...1]
       :l:
         The Lightness component value [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-      
+
     >>> Color.HslToRgb(30.0, 1.0, 0.5)
     (1.0, 0.5, 0.0)
-    
+
     '''
     if s==0: return (l, l, l)   # achromatic (gray)
 
@@ -443,7 +443,7 @@ class Color:
   @staticmethod
   def RgbToHsv(r, g, b):
     '''Convert the color from RGB coordinates to HSV.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -451,19 +451,19 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (h, s, v) tuple in the range:
       h[0...360],
       s[0...1],
       v[0...1]
-    
+
     >>> Color.RgbToHsv(1, 0.5, 0)
     (30.0, 1.0, 1.0)
-    
+
     '''
     v = float(max(r, g, b))
-    d = v - min(r, g, b)    
+    d = v - min(r, g, b)
     if d==0: return (0.0, 0.0, v)
     s = d / v
 
@@ -475,14 +475,14 @@ class Color:
       h = 2.0 + dr - db       # between cyan & yellow
     else: # b==v
       h = 4.0 + dg - dr       # between magenta & cyan
-    
+
     h = (h*60.0) % 360.0
     return (h, s, v)
 
   @staticmethod
   def HsvToRgb(h, s, v):
     '''Convert the color from RGB coordinates to HSV.
-    
+
     Parameters:
       :h:
         The Hus component value [0...1]
@@ -490,29 +490,29 @@ class Color:
         The Saturation component value [0...1]
       :v:
         The Value component [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-      
+
     >>> Color.HslToRgb(30.0, 1.0, 0.5)
     (1.0, 0.5, 0.0)
-    
+
     '''
     if s==0: return (v, v, v)   # achromatic (gray)
-    
+
     h /= 60.0
     h = h % 6.0
 
     i = int(h)
     f = h - i
     if not(i&1): f = 1-f     # if i is even
-    
+
     m = v * (1.0 - s)
     n = v * (1.0 - (s * f))
-    
+
     if i==0: return (v, n, m)
     if i==1: return (n, v, m)
     if i==2: return (m, v, n)
@@ -523,7 +523,7 @@ class Color:
   @staticmethod
   def RgbToYiq(r, g, b):
     '''Convert the color from RGB to YIQ.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -531,16 +531,16 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (y, i, q) tuple in the range:
       y[0...1],
       i[0...1],
       q[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.RgbToYiq(1, 0.5, 0)
     '(0.592263, 0.458874, -0.0499818)'
-    
+
     '''
     y = (r * 0.29895808) + (g * 0.58660979) + (b *0.11443213)
     i = (r * 0.59590296) - (g * 0.27405705) - (b *0.32184591)
@@ -550,7 +550,7 @@ class Color:
   @staticmethod
   def YiqToRgb(y, i, q):
     '''Convert the color from YIQ coordinates to RGB.
-    
+
     Parameters:
       :y:
         Tte Y component value [0...1]
@@ -558,16 +558,16 @@ class Color:
         The I component value [0...1]
       :q:
         The Q component value [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.YiqToRgb(0.592263, 0.458874, -0.0499818)
     '(1, 0.5, 5.442e-07)'
-    
+
     '''
     r = y + (i * 0.9562) + (q * 0.6210)
     g = y - (i * 0.2717) - (q * 0.6485)
@@ -577,7 +577,7 @@ class Color:
   @staticmethod
   def RgbToYuv(r, g, b):
     '''Convert the color from RGB coordinates to YUV.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -585,16 +585,16 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (y, u, v) tuple in the range:
       y[0...1],
       u[-0.436...0.436],
       v[-0.615...0.615]
-    
+
     >>> '(%g, %g, %g)' % Color.RgbToYuv(1, 0.5, 0)
     '(0.5925, -0.29156, 0.357505)'
-    
+
     '''
     y =  (r * 0.29900) + (g * 0.58700) + (b * 0.11400)
     u = -(r * 0.14713) - (g * 0.28886) + (b * 0.43600)
@@ -604,7 +604,7 @@ class Color:
   @staticmethod
   def YuvToRgb(y, u, v):
     '''Convert the color from YUV coordinates to RGB.
-    
+
     Parameters:
       :y:
         The Y component value [0...1]
@@ -612,16 +612,16 @@ class Color:
         The U component value [-0.436...0.436]
       :v:
         The V component value [-0.615...0.615]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.YuvToRgb(0.5925, -0.2916, 0.3575)
     '(0.999989, 0.500015, -6.3276e-05)'
-    
+
     '''
     r = y + (v * 1.13983)
     g = y - (u * 0.39465) - (v * 0.58060)
@@ -631,14 +631,14 @@ class Color:
   @staticmethod
   def RgbToXyz(r, g, b):
     '''Convert the color from sRGB to CIE XYZ.
-    
+
     The methods assumes that the RGB coordinates are given in the sRGB
     colorspace (D65).
-    
+
     .. note::
-       
+
        Compensation for the sRGB gamma correction is applied before converting.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -646,19 +646,19 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (x, y, z) tuple in the range:
       x[0...1],
       y[0...1],
       z[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.RgbToXyz(1, 0.5, 0)
     '(0.488941, 0.365682, 0.0448137)'
-    
+
     '''
     r, g, b = [((v <= 0.03928) and [v / 12.92] or [((v+0.055) / 1.055) **2.4])[0] for v in (r, g, b)]
-    
+
     x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805)
     y = (r * 0.2126) + (g * 0.7152) + (b * 0.0722)
     z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505)
@@ -669,9 +669,9 @@ class Color:
     '''Convert the color from CIE XYZ coordinates to sRGB.
 
     .. note::
-       
+
        Compensation for sRGB gamma correction is applied before converting.
-    
+
     Parameters:
       :x:
         The X component value [0...1]
@@ -679,16 +679,16 @@ class Color:
         The Y component value [0...1]
       :z:
         The Z component value [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.XyzToRgb(0.488941, 0.365682, 0.0448137)
     '(1, 0.5, 6.81883e-08)'
-    
+
     '''
     r =  (x * 3.2406255) - (y * 1.5372080) - (z * 0.4986286)
     g = -(x * 0.9689307) + (y * 1.8757561) + (z * 0.0415175)
@@ -698,7 +698,7 @@ class Color:
   @staticmethod
   def XyzToLab(x, y, z, wref=_DEFAULT_WREF):
     '''Convert the color from CIE XYZ to CIE L*a*b*.
-    
+
     Parameters:
       :x:
         The X component value [0...1]
@@ -708,39 +708,39 @@ class Color:
         The Z component value [0...1]
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       The color as an (L, a, b) tuple in the range:
       L[0...100],
       a[-1...1],
       b[-1...1]
-    
+
     >>> '(%g, %g, %g)' % Color.XyzToLab(0.488941, 0.365682, 0.0448137)
     '(66.9518, 0.43084, 0.739692)'
-    
+
     >>> '(%g, %g, %g)' % Color.XyzToLab(0.488941, 0.365682, 0.0448137, Color.WHITE_REFERENCE['std_D50'])
     '(66.9518, 0.411663, 0.67282)'
-    
+
     '''
     # White point correction
     x /= wref[0]
     y /= wref[1]
     z /= wref[2]
-    
+
     # Nonlinear distortion and linear transformation
     x, y, z = [((v > 0.008856) and [v**_oneThird] or [(7.787 * v) + _sixteenHundredsixteenth])[0] for v in (x, y, z)]
-    
+
     # Vector scaling
     l = (116 * y) - 16
     a = 5.0 * (x - y)
     b = 2.0 * (y - z)
-    
+
     return (l, a, b)
 
   @staticmethod
   def LabToXyz(l, a, b, wref=_DEFAULT_WREF):
     '''Convert the color from CIE L*a*b* to CIE 1931 XYZ.
-    
+
     Parameters:
       :l:
         The L component [0...100]
@@ -750,19 +750,19 @@ class Color:
         The a component [-1...1]
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       The color as an (x, y, z) tuple in the range:
       x[0...q],
       y[0...1],
       z[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.LabToXyz(66.9518, 0.43084, 0.739692)
     '(0.488941, 0.365682, 0.0448137)'
-    
+
     >>> '(%g, %g, %g)' % Color.LabToXyz(66.9518, 0.411663, 0.67282, Color.WHITE_REFERENCE['std_D50'])
     '(0.488941, 0.365682, 0.0448138)'
-    
+
     '''
     y = (l + 16) / 116
     x = (a / 5.0) + y
@@ -772,7 +772,7 @@ class Color:
   @staticmethod
   def CmykToCmy(c, m, y, k):
     '''Convert the color from CMYK coordinates to CMY.
-    
+
     Parameters:
       :c:
         The Cyan component value [0...1]
@@ -782,16 +782,16 @@ class Color:
         The Yellow component value [0...1]
       :k:
         The Black component value [0...1]
-    
+
     Returns:
       The color as an (c, m, y) tuple in the range:
       c[0...1],
       m[0...1],
       y[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.CmykToCmy(1, 0.32, 0, 0.5)
     '(1, 0.66, 0.5)'
-    
+
     '''
     mk = 1-k
     return ((c*mk + k), (m*mk + k), (y*mk + k))
@@ -799,7 +799,7 @@ class Color:
   @staticmethod
   def CmyToCmyk(c, m, y):
     '''Convert the color from CMY coordinates to CMYK.
-    
+
     Parameters:
       :c:
         The Cyan component value [0...1]
@@ -807,17 +807,17 @@ class Color:
         The Magenta component value [0...1]
       :y:
         The Yellow component value [0...1]
-    
+
     Returns:
       The color as an (c, m, y, k) tuple in the range:
       c[0...1],
       m[0...1],
       y[0...1],
       k[0...1]
-    
+
     >>> '(%g, %g, %g, %g)' % Color.CmyToCmyk(1, 0.66, 0.5)
     '(1, 0.32, 0, 0.5)'
-    
+
     '''
     k = min(c, m, y)
     if k==1.0: return (0.0, 0.0, 0.0, 1.0)
@@ -827,7 +827,7 @@ class Color:
   @staticmethod
   def RgbToCmy(r, g, b):
     '''Convert the color from RGB coordinates to CMY.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -835,23 +835,23 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (c, m, y) tuple in the range:
       c[0...1],
       m[0...1],
       y[0...1]
-    
+
     >>> Color.RgbToCmy(1, 0.5, 0)
     (0, 0.5, 1)
-    
+
     '''
     return (1-r, 1-g, 1-b)
 
   @staticmethod
   def CmyToRgb(c, m, y):
     '''Convert the color from CMY coordinates to RGB.
-    
+
     Parameters:
       :c:
         The Cyan component value [0...1]
@@ -859,23 +859,23 @@ class Color:
         The Magenta component value [0...1]
       :y:
         The Yellow component value [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> Color.CmyToRgb(0, 0.5, 1)
     (1, 0.5, 0)
-    
+
     '''
     return (1-c, 1-m, 1-y)
 
   @staticmethod
   def RgbToHtml(r, g, b):
     '''Convert the color from (r, g, b) to #RRGGBB.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -883,35 +883,35 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       A CSS string representation of this color (#RRGGBB).
-    
+
     >>> Color.RgbToHtml(1, 0.5, 0)
     '#ff8000'
-    
+
     '''
     return '#%02x%02x%02x' % tuple((min(round(v*255), 255) for v in (r, g, b)))
 
   @staticmethod
   def HtmlToRgb(html):
     '''Convert the HTML color to (r, g, b).
-    
+
     Parameters:
       :html:
         the HTML definition of the color (#RRGGBB or #RGB or a color name).
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     Throws:
       :ValueError:
         If html is neither a known color name or a hexadecimal RGB
         representation.
-    
+
     >>> '(%g, %g, %g)' % Color.HtmlToRgb('#ff8000')
     '(1, 0.501961, 0)'
     >>> '(%g, %g, %g)' % Color.HtmlToRgb('ff8000')
@@ -922,7 +922,7 @@ class Color:
     '(1, 0.4, 0)'
     >>> '(%g, %g, %g)' % Color.HtmlToRgb('lemonchiffon')
     '(1, 0.980392, 0.803922)'
-    
+
     '''
     html = html.strip().lower()
     if html[0]=='#':
@@ -936,13 +936,13 @@ class Color:
       rgb = ['%c%c' % (v,v) for v in html]
     else:
       raise ValueError, 'input #%s is not in #RRGGBB format' % html
-    
+
     return tuple(((int(n, 16) / 255.0) for n in rgb))
 
   @staticmethod
   def RgbToPil(r, g, b):
     '''Convert the color from RGB to a PIL-compatible integer.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -950,13 +950,13 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       A PIL compatible integer (0xBBGGRR).
-    
+
     >>> '0x%06x' % Color.RgbToPil(1, 0.5, 0)
     '0x0080ff'
-    
+
     '''
     r, g, b = [min(int(round(v*255)), 255) for v in (r, g, b)]
     return (b << 16) + (g << 8) + r
@@ -964,7 +964,7 @@ class Color:
   @staticmethod
   def PilToRgb(pil):
     '''Convert the color from a PIL-compatible integer to RGB.
-    
+
     Parameters:
       pil: a PIL compatible color representation (0xBBGGRR)
     Returns:
@@ -973,10 +973,10 @@ class Color:
       r: [0...1]
       g: [0...1]
       b: [0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.PilToRgb(0x0080ff)
     '(1, 0.501961, 0)'
-    
+
     '''
     r = 0xff & pil
     g = 0xff & (pil >> 8)
@@ -986,30 +986,30 @@ class Color:
   @staticmethod
   def _WebSafeComponent(c, alt=False):
     '''Convert a color component to its web safe equivalent.
-    
+
     Parameters:
       :c:
         The component value [0...1]
       :alt:
         If True, return the alternative value instead of the nearest one.
-    
+
     Returns:
       The web safe equivalent of the component value.
-    
+
     '''
     # This sucks, but floating point between 0 and 1 is quite fuzzy...
     # So we just change the scale a while to make the equality tests
     # work, otherwise it gets wrong at some decimal far to the right.
     sc = c * 100.0
-    
+
     # If the color is already safe, return it straight away
     d = sc % 20
     if d==0: return c
-    
+
     # Get the lower and upper safe values
     l = sc - d
     u = l + 20
-    
+
     # Return the 'closest' value according to the alt flag
     if alt:
       if (sc-l) >= (u-sc): return l/100.0
@@ -1021,7 +1021,7 @@ class Color:
   @staticmethod
   def RgbToWebSafe(r, g, b, alt=False):
     '''Convert the color from RGB to 'web safe' RGB
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -1032,17 +1032,17 @@ class Color:
       :alt:
         If True, use the alternative color instead of the nearest one.
         Can be used for dithering.
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.RgbToWebSafe(1, 0.55, 0.0)
     '(1, 0.6, 0)'
-    
+
     '''
     webSafeComponent = Color._WebSafeComponent
     return tuple((webSafeComponent(v, alt) for v in (r, g, b)))
@@ -1058,17 +1058,17 @@ class Color:
         The Green component value [0...1]
       :b:
         The Blue component value [0...1]
-    
+
     Returns:
       The color as an (r, g, b) tuple in the range:
       the range:
       r[0...1],
       g[0...1],
       b[0...1]
-    
+
     >>> '(%g, %g, %g)' % Color.RgbToGreyscale(1, 0.8, 0)
     '(0.6, 0.6, 0.6)'
-    
+
     '''
     v = (r + g + b) / 3.0
     return (v, v, v)
@@ -1076,38 +1076,38 @@ class Color:
   @staticmethod
   def RgbToRyb(hue):
     '''Maps a hue on the RGB color wheel to Itten's RYB wheel.
-    
+
     Parameters:
       :hue:
         The hue on the RGB color wheel [0...360]
-    
+
     Returns:
       An approximation of the corresponding hue on Itten's RYB wheel.
-    
+
     >>> Color.RgbToRyb(15)
     26.0
-    
+
     '''
     d = hue % 15
     i = int(hue / 15)
     x0 = _RybWheel[i]
     x1 = _RybWheel[i+1]
     return x0 + (x1-x0) * d / 15
-    
+
   @staticmethod
   def RybToRgb(hue):
     '''Maps a hue on Itten's RYB color wheel to the standard RGB wheel.
-    
+
     Parameters:
       :hue:
         The hue on Itten's RYB color wheel [0...360]
-    
+
     Returns:
       An approximation of the corresponding hue on the standard RGB wheel.
-    
+
     >>> Color.RybToRgb(15)
     8.0
-    
+
     '''
     d = hue % 15
     i = int(hue / 15)
@@ -1118,7 +1118,7 @@ class Color:
   @staticmethod
   def NewFromRgb(r, g, b, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed RGB values.
-    
+
     Parameters:
       :r:
         The Red component value [0...1]
@@ -1130,22 +1130,22 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> Color.NewFromRgb(1.0, 0.5, 0.0)
     (1.0, 0.5, 0.0, 1.0)
     >>> Color.NewFromRgb(1.0, 0.5, 0.0, 0.5)
     (1.0, 0.5, 0.0, 0.5)
-    
+
     '''
     return Color((r, g, b), 'rgb', alpha, wref)
 
   @staticmethod
   def NewFromHsl(h, s, l, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed HSL values.
-    
+
     Parameters:
       :h:
         The Hue component value [0...1]
@@ -1157,22 +1157,22 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> Color.NewFromHsl(30, 1, 0.5)
     (1.0, 0.5, 0.0, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5, 0.5)
     (1.0, 0.5, 0.0, 0.5)
-    
+
     '''
     return Color((h, s, l), 'hsl', alpha, wref)
 
   @staticmethod
   def NewFromHsv(h, s, v, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed HSV values.
-    
+
     Parameters:
       :h:
         The Hus component value [0...1]
@@ -1184,15 +1184,15 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> Color.NewFromHsv(30, 1, 1)
     (1.0, 0.5, 0.0, 1.0)
     >>> Color.NewFromHsv(30, 1, 1, 0.5)
     (1.0, 0.5, 0.0, 0.5)
-    
+
     '''
     h2, s, l = Color.RgbToHsl(*Color.HsvToRgb(h, s, v))
     return Color((h, s, l), 'hsl', alpha, wref)
@@ -1200,7 +1200,7 @@ class Color:
   @staticmethod
   def NewFromYiq(y, i, q, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed YIQ values.
-    
+
     Parameters:
       :y:
         The Y component value [0...1]
@@ -1212,10 +1212,10 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05))
     '(0.999902, 0.499955, -6.6905e-05, 1)'
     >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05, 0.5))
@@ -1227,7 +1227,7 @@ class Color:
   @staticmethod
   def NewFromYuv(y, u, v, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed YUV values.
-    
+
     Parameters:
       :y:
         The Y component value [0...1]
@@ -1239,10 +1239,10 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575))
     '(0.999989, 0.500015, -6.3276e-05, 1)'
     >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575, 0.5))
@@ -1254,7 +1254,7 @@ class Color:
   @staticmethod
   def NewFromXyz(x, y, z, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed CIE-XYZ values.
-    
+
     Parameters:
       :x:
         The Red component value [0...1]
@@ -1266,10 +1266,10 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137))
     '(1, 0.5, 6.81883e-08, 1)'
     >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137, 0.5))
@@ -1281,7 +1281,7 @@ class Color:
   @staticmethod
   def NewFromLab(l, a, b, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed CIE-LAB values.
-    
+
     Parameters:
       :l:
         The L component [0...100]
@@ -1293,10 +1293,10 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692))
     '(1, 0.5, 1.09491e-08, 1)'
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, wref=Color.WHITE_REFERENCE['std_D50']))
@@ -1305,14 +1305,14 @@ class Color:
     '(1, 0.5, 1.09491e-08, 0.5)'
     >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5, Color.WHITE_REFERENCE['std_D50']))
     '(1.01238, 0.492011, -0.14311, 0.5)'
-    
+
     '''
     return Color(Color.XyzToRgb(*Color.LabToXyz(l, a, b, wref)), 'rgb', alpha, wref)
 
   @staticmethod
   def NewFromCmy(c, m, y, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed CMY values.
-    
+
     Parameters:
       :c:
         The Cyan component value [0...1]
@@ -1324,22 +1324,22 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> Color.NewFromCmy(0, 0.5, 1)
     (1, 0.5, 0, 1.0)
     >>> Color.NewFromCmy(0, 0.5, 1, 0.5)
     (1, 0.5, 0, 0.5)
-    
+
     '''
     return Color(Color.CmyToRgb(c, m, y), 'rgb', alpha, wref)
 
   @staticmethod
   def NewFromCmyk(c, m, y, k, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed CMYK values.
-    
+
     Parameters:
       :c:
         The Cyan component value [0...1]
@@ -1353,10 +1353,10 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromCmyk(1, 0.32, 0, 0.5))
     '(0, 0.34, 0.5, 1)'
     >>> str(Color.NewFromCmyk(1, 0.32, 0, 0.5, 0.5))
@@ -1368,7 +1368,7 @@ class Color:
   @staticmethod
   def NewFromHtml(html, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed HTML color definition.
-    
+
     Parameters:
       :html:
         The HTML definition of the color (#RRGGBB or #RGB or a color name).
@@ -1376,10 +1376,10 @@ class Color:
         The color transparency [0...1], default is opaque.
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromHtml('#ff8000'))
     '(1, 0.501961, 0, 1)'
     >>> str(Color.NewFromHtml('ff8000'))
@@ -1392,14 +1392,14 @@ class Color:
     '(1, 0.980392, 0.803922, 1)'
     >>> str(Color.NewFromHtml('#ff8000', 0.5))
     '(1, 0.501961, 0, 0.5)'
-    
+
     '''
     return Color(Color.HtmlToRgb(html), 'rgb', alpha, wref)
 
   @staticmethod
   def NewFromPil(pil, alpha=1.0, wref=_DEFAULT_WREF):
     '''Create a new instance based on the specifed PIL color.
-    
+
     Parameters:
       :pil:
         A PIL compatible color representation (0xBBGGRR)
@@ -1407,22 +1407,22 @@ class Color:
         The color transparency [0...1], default is opaque
       :wref:
         The whitepoint reference, default is 2° D65.
-    
+
     Returns:
       A grapefruit.Color instance.
-    
+
     >>> str(Color.NewFromPil(0x0080ff))
     '(1, 0.501961, 0, 1)'
     >>> str(Color.NewFromPil(0x0080ff, 0.5))
     '(1, 0.501961, 0, 0.5)'
-    
+
     '''
     return Color(Color.PilToRgb(pil), 'rgb', alpha, wref)
 
   def __GetAlpha(self):
     return self.__a
   alpha = property(fget=__GetAlpha, doc='The transparency of this color. 0.0 is transparent and 1.0 is fully opaque.')
-  
+
   def __GetWRef(self):
     return self.__wref
   whiteRef = property(fget=__GetWRef, doc='the white reference point of this color.')
@@ -1430,7 +1430,7 @@ class Color:
   def __GetRGB(self):
     return self.__rgb
   rgb = property(fget=__GetRGB, doc='The RGB values of this Color.')
-  
+
   def __GetHue(self):
     return self.__hsl[0]
   hue = property(fget=__GetHue, doc='The hue of this color.')
@@ -1486,42 +1486,42 @@ class Color:
 
   def ColorWithAlpha(self, alpha):
     '''Create a new instance based on this one with a new alpha value.
-    
+
     Parameters:
       :alpha:
         The transparency of the new color [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
     >>> Color.NewFromRgb(1.0, 0.5, 0.0, 1.0).ColorWithAlpha(0.5)
     (1.0, 0.5, 0.0, 0.5)
-    
+
     '''
     return Color(self.__rgb, 'rgb', alpha, self.__wref)
-  
+
   def ColorWithWhiteRef(self, wref, labAsRef=False):
     '''Create a new instance based on this one with a new white reference.
-    
+
     Parameters:
       :wref:
         The whitepoint reference.
       :labAsRef:
         If True, the L*a*b* values of the current instance are used as reference
         for the new color; otherwise, the RGB values are used as reference.
-    
+
     Returns:
       A grapefruit.Color instance.
 
-    
+
     >>> c = Color.NewFromRgb(1.0, 0.5, 0.0, 1.0, Color.WHITE_REFERENCE['std_D65'])
-    
+
     >>> c2 = c.ColorWithWhiteRef(Color.WHITE_REFERENCE['sup_D50'])
     >>> c2.rgb
     (1.0, 0.5, 0.0)
     >>> '(%g, %g, %g)' % c2.whiteRef
     '(0.96721, 1, 0.81428)'
-    
+
     >>> c2 = c.ColorWithWhiteRef(Color.WHITE_REFERENCE['sup_D50'], labAsRef=True)
     >>> '(%g, %g, %g)' % c2.rgb
     '(1.01463, 0.490339, -0.148131)'
@@ -1541,11 +1541,11 @@ class Color:
 
   def ColorWithHue(self, hue):
     '''Create a new instance based on this one with a new hue.
-    
+
     Parameters:
       :hue:
         The hue of the new color [0...360].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1553,22 +1553,22 @@ class Color:
     (1.0, 1.0, 0.0, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).ColorWithHue(60).hsl
     (60, 1, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((hue, s, l), 'hsl', self.__a, self.__wref)
 
   def ColorWithSaturation(self, saturation):
     '''Create a new instance based on this one with a new saturation value.
-    
+
     .. note::
-       
+
        The saturation is defined for the HSL mode.
-    
+
     Parameters:
       :saturation:
         The saturation of the new color [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1576,18 +1576,18 @@ class Color:
     (0.75, 0.5, 0.25, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).ColorWithSaturation(0.5).hsl
     (30, 0.5, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, saturation, l), 'hsl', self.__a, self.__wref)
 
   def ColorWithLightness(self, lightness):
     '''Create a new instance based on this one with a new lightness value.
-    
+
     Parameters:
       :lightness:
         The lightness of the new color [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1595,19 +1595,19 @@ class Color:
     (0.5, 0.25, 0.0, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).ColorWithLightness(0.25).hsl
     (30, 1, 0.25)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, s, lightness), 'hsl', self.__a, self.__wref)
 
   def DarkerColor(self, level):
     '''Create a new instance based on this one but darker.
-    
+
     Parameters:
       :level:
         The amount by which the color should be darkened to produce
         the new one [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1615,19 +1615,19 @@ class Color:
     (0.5, 0.25, 0.0, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).DarkerColor(0.25).hsl
     (30, 1, 0.25)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, s, max(l - level, 0)), 'hsl', self.__a, self.__wref)
 
   def LighterColor(self, level):
     '''Create a new instance based on this one but lighter.
-    
+
     Parameters:
       :level:
         The amount by which the color should be lightened to produce
         the new one [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1635,19 +1635,19 @@ class Color:
     (1.0, 0.75, 0.5, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).LighterColor(0.25).hsl
     (30, 1, 0.75)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, s, min(l + level, 1)), 'hsl', self.__a, self.__wref)
-  
+
   def Saturate(self, level):
     '''Create a new instance based on this one but more saturated.
-    
+
     Parameters:
       :level:
         The amount by which the color should be saturated to produce
         the new one [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1655,19 +1655,19 @@ class Color:
     (0.875, 0.5, 0.125, 1.0)
     >>> Color.NewFromHsl(30, 0.5, 0.5).Saturate(0.25).hsl
     (30, 0.75, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, min(s + level, 1), l), 'hsl', self.__a, self.__wref)
 
   def Desaturate(self, level):
     '''Create a new instance based on this one but less saturated.
-    
+
     Parameters:
       :level:
         The amount by which the color should be desaturated to produce
         the new one [0...1].
-    
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1675,14 +1675,14 @@ class Color:
     (0.625, 0.5, 0.375, 1.0)
     >>> Color.NewFromHsl(30, 0.5, 0.5).Desaturate(0.25).hsl
     (30, 0.25, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
     return Color((h, max(s - level, 0), l), 'hsl', self.__a, self.__wref)
-  
+
   def WebSafeDither(self):
     '''Return the two websafe colors nearest to this one.
-    
+
     Returns:
       A tuple of two grapefruit.Color instances which are the two
       web safe colors closest this one.
@@ -1693,7 +1693,7 @@ class Color:
     '(1, 0.4, 0, 1)'
     >>> str(c2)
     '(1, 0.6, 0, 1)'
-    
+
     '''
     return (
       Color(Color.RgbToWebSafe(*self.__rgb), 'rgb', self.__a, self.__wref),
@@ -1701,14 +1701,14 @@ class Color:
 
   def Gradient(self, target, steps=100):
     '''Create a list with the gradient colors between this and the other color.
-    
+
     Parameters:
       :target:
         The grapefruit.Color at the other end of the gradient.
       :steps:
         The number of gradients steps to create.
-    
-    
+
+
     Returns:
       A list of grapefruit.Color instances.
 
@@ -1716,12 +1716,12 @@ class Color:
     >>> c2 = Color.NewFromRgb(0.0, 1.0, 0.0, alpha=0)
     >>> c1.Gradient(c2, 3)
     [(0.75, 0.25, 0.0, 0.75), (0.5, 0.5, 0.0, 0.5), (0.25, 0.75, 0.0, 0.25)]
-    
+
     '''
     gradient = []
     rgba1 = self.__rgb + (self.__a,)
     rgba2 = target.__rgb + (target.__a,)
-    
+
     steps += 1
     for n in xrange(1, steps):
       d = 1.0*n/steps
@@ -1731,17 +1731,17 @@ class Color:
       a = (rgba1[3]*(1-d)) + (rgba2[3]*d)
 
       gradient.append(Color((r, g, b), 'rgb', a, self.__wref))
-    
+
     return gradient
 
   def ComplementaryColor(self, mode='ryb'):
     '''Create a new instance which is the complementary color of this one.
-    
+
     Parameters:
       :mode:
         Select which color wheel to use for the generation (ryb/rgb).
-    
-    
+
+
     Returns:
       A grapefruit.Color instance.
 
@@ -1749,19 +1749,19 @@ class Color:
     (0.0, 0.5, 1.0, 1.0)
     >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb').hsl
     (210, 1, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
 
     if mode == 'ryb': h = Color.RgbToRyb(h)
     h = (h+180)%360
     if mode == 'ryb': h = Color.RybToRgb(h)
-    
+
     return Color((h, s, l), 'hsl', self.__a, self.__wref)
-  
+
   def MonochromeScheme(self):
     '''Return 4 colors in the same hue with varying saturation/lightness.
-    
+
     Returns:
       A tuple of 4 grapefruit.Color in the same hue as this one,
       with varying saturation/lightness.
@@ -1776,57 +1776,57 @@ class Color:
       else: return x-min
 
     h, s, l = self.__hsl
-    
+
     s1 = _wrap(s, 0.3, 0.1, 0.3)
     l1 = _wrap(l, 0.5, 0.2, 0.3)
-    
+
     s2 = s
     l2 = _wrap(l, 0.2, 0.2, 0.6)
-    
+
     s3 = s1
     l3 = max(0.2, l + (1-l)*0.2)
-    
+
     s4 = s
     l4 = _wrap(l, 0.5, 0.2, 0.3)
-    
+
     return (
       Color((h, s1,  l1), 'hsl', self.__a, self.__wref),
       Color((h, s2,  l2), 'hsl', self.__a, self.__wref),
       Color((h, s3,  l3), 'hsl', self.__a, self.__wref),
       Color((h, s4,  l4), 'hsl', self.__a, self.__wref))
-  
+
   def TriadicScheme(self, angle=120, mode='ryb'):
     '''Return two colors forming a triad or a split complementary with this one.
-    
+
     Parameters:
       :angle:
         The angle between the hues of the created colors.
         The default value makes a triad.
       :mode:
         Select which color wheel to use for the generation (ryb/rgb).
-    
+
     Returns:
       A tuple of two grapefruit.Color forming a color triad with
       this one or a split complementary.
 
     >>> c1 = Color.NewFromHsl(30, 1, 0.5)
-    
+
     >>> c2, c3 = c1.TriadicScheme(mode='rgb')
     >>> c2.hsl
     (150.0, 1, 0.5)
     >>> c3.hsl
     (270.0, 1, 0.5)
-    
+
     >>> c2, c3 = c1.TriadicScheme(angle=40, mode='rgb')
     >>> c2.hsl
     (190.0, 1, 0.5)
     >>> c3.hsl
     (230.0, 1, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
     angle = min(angle, 120) / 2.0
-    
+
     if mode == 'ryb': h = Color.RgbToRyb(h)
     h += 180
     h1 = (h - angle) % 360
@@ -1834,21 +1834,21 @@ class Color:
     if mode == 'ryb':
       h1 = Color.RybToRgb(h1)
       h2 = Color.RybToRgb(h2)
-    
+
     return (
       Color((h1, s,  l), 'hsl', self.__a, self.__wref),
       Color((h2, s,  l), 'hsl', self.__a, self.__wref))
 
   def TetradicScheme(self, angle=30, mode='ryb'):
     '''Return three colors froming a tetrad with this one.
-    
+
     Parameters:
       :angle:
         The angle to substract from the adjacent colors hues [-90...90].
         You can use an angle of zero to generate a square tetrad.
       :mode:
         Select which color wheel to use for the generation (ryb/rgb).
-    
+
     Returns:
       A tuple of three grapefruit.Color forming a color tetrad with
       this one.
@@ -1856,7 +1856,7 @@ class Color:
     >>> col = Color.NewFromHsl(30, 1, 0.5)
     >>> [c.hsl for c in col.TetradicScheme(mode='rgb', angle=30)]
     [(90, 1, 0.5), (210, 1, 0.5), (270, 1, 0.5)]
-    
+
     '''
     h, s, l = self.__hsl
 
@@ -1876,7 +1876,7 @@ class Color:
 
   def AnalogousScheme(self, angle=30, mode='ryb'):
     '''Return two colors analogous to this one.
-    
+
     Args:
       :angle:
         The angle between the hues of the created colors and this one.
@@ -1887,19 +1887,19 @@ class Color:
       A tuple of grapefruit.Colors analogous to this one.
 
     >>> c1 = Color.NewFromHsl(30, 1, 0.5)
-    
+
     >>> c2, c3 = c1.AnalogousScheme(angle=60, mode='rgb')
     >>> c2.hsl
     (330, 1, 0.5)
     >>> c3.hsl
     (90, 1, 0.5)
-    
+
     >>> c2, c3 = c1.AnalogousScheme(angle=10, mode='rgb')
     >>> c2.hsl
     (20, 1, 0.5)
     >>> c3.hsl
     (40, 1, 0.5)
-    
+
     '''
     h, s, l = self.__hsl
 
@@ -1910,17 +1910,17 @@ class Color:
     if mode == 'ryb':
       h1 = Color.RybToRgb(h1)
       h2 = Color.RybToRgb(h2)
-    
+
     return (Color((h1, s,  l), 'hsl', self.__a, self.__wref),
         Color((h2, s,  l), 'hsl', self.__a, self.__wref))
 
   def AlphaBlend(self, other):
     '''Alpha-blend this color on the other one.
-    
+
     Args:
       :other:
         The grapefruit.Color to alpha-blend with this one.
-    
+
     Returns:
       A grapefruit.Color instance which is the result of alpha-blending
       this color on the other one.
@@ -1930,7 +1930,7 @@ class Color:
     >>> c3 = c1.AlphaBlend(c2)
     >>> str(c3)
     '(1, 0.875, 0.75, 0.84)'
-    
+
     '''
     # get final alpha channel
     fa = self.__a + other.__a - (self.__a * other.__a)
@@ -1944,7 +1944,7 @@ class Color:
 
     sr, sg, sb = [v * sa for v in self.__rgb]
     dr, dg, db = [v * da for v in other.__rgb]
-    
+
     return Color((sr+dr, sg+dg, sb+db), 'rgb', fa, self.__wref)
 
   def Blend(self, other, percent=0.5):
@@ -1953,7 +1953,7 @@ class Color:
     Args:
       :other:
         the grapefruit.Color to blend with this one.
-    
+
     Returns:
       A grapefruit.Color instance which is the result of blending
       this color on the other one.
@@ -1963,7 +1963,7 @@ class Color:
     >>> c3 = c1.Blend(c2)
     >>> str(c3)
     '(1, 0.75, 0.5, 0.4)'
-    
+
     '''
     dest = 1.0 - percent
     rgb = tuple(((u * percent) + (v * dest) for u, v in zip(self.__rgb, other.__rgb)))
