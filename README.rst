@@ -2,6 +2,21 @@
 README for GrapeFruit
 =====================
 
+GrapeFruit is a pure Python module that let you easily manipulate and convert color information.
+Its Primary goal is to be *natural* and *flexible*.
+
+The following color systems are supported by GrapeFruit:
+  * RGB (sRGB)
+  * HSL 
+  * HSV
+  * YIQ
+  * YUV
+  * CIE-XYZ
+  * CIE-LAB (with the illuminant you want)
+  * CMY
+  * CMYK
+  * HTML/CSS color definition (#RRGGBB, #RGB or the X11 color name)
+  * RYB (artistic color wheel
 Installing
 ============
 
@@ -9,7 +24,7 @@ Installing
 
 Download the latest grapefruit library from:
 
-  http://code.google.com/p/grapefruit/
+  https://github.com/xav/Grapefruit
 
 
 Untar the source distribution and run::
@@ -29,17 +44,6 @@ Without setuptools installed::
 
   $ python grapefruit_test.py
 
-
-Getting the code
-==================
-
-View the trunk at:
-
-  http://grapefruit.googlecode.com/svn/trunk/
-
-Check out the latest development version anonymously with::
-
-  $ svn checkout http://grapefruit.googlecode.com/svn/trunk/ GrapeFruit
 
 Documentation
 ===============
