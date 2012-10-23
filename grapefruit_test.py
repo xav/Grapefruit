@@ -353,3 +353,5 @@ class ColorTest(GrapeFruitTestCase):
 if __name__ == '__main__':
   unittest.main()
   pass
+
+# vim: ts=2 sts=2 sw=2 et
