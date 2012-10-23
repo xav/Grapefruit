@@ -873,6 +873,52 @@ class Color:
     return (1-c, 1-m, 1-y)
 
   @staticmethod
+  def RgbToIntTuple(r, g, b):
+    '''Convert the color from (r, g, b) to an int tuple.
+
+    Parameters:
+      :r:
+        The Red component value [0...1]
+      :g:
+        The Green component value [0...1]
+      :b:
+        The Blue component value [0...1]
+
+    Returns:
+      The color as an (r, g, b) tuple in the range:
+      r[0...255],
+      g[0...2551],
+      b[0...2551]
+
+    >>> Color.RgbToIntTuple(1, 0.5, 0)
+    (255, 128, 0)
+
+    '''
+    return tuple(int(round(v*255)) for v in (r, g, b))
+
+  @staticmethod
+  def IntTupleToRgb(intTuple):
+    '''Convert a tuple of ints to (r, g, b).
+
+    Parameters:
+      The color as an (r, g, b) integer tuple in the range:
+      r[0...255],
+      g[0...255],
+      b[0...255]
+
+    Returns:
+      The color as an (r, g, b) tuple in the range:
+      r[0...1],
+      g[0...1],
+      b[0...1]
+
+    >>> '(%g, %g, %g)' % Color.IntTupleToRgb((255, 128, 0))
+    '(1, 0.501961, 0)'
+
+    '''
+    return tuple(v / 255 for v in intTuple)
+
+  @staticmethod
   def RgbToHtml(r, g, b):
     '''Convert the color from (r, g, b) to #RRGGBB.
 
@@ -1467,6 +1513,10 @@ class Color:
   def __GetCMYK(self):
     return Color.CmyToCmyk(*Color.RgbToCmy(*self.__rgb))
   cmyk = property(fget=__GetCMYK, doc='The CMYK values of this Color.')
+
+  def __GetIntTuple(self):
+    return Color.RgbToIntTuple(*self.__rgb)
+  intTuple = property(fget=__GetIntTuple, doc='This Color as a tuple of integers in the range [0...255]')
 
   def __GetHTML(self):
     return Color.RgbToHtml(*self.__rgb)
