@@ -350,6 +350,17 @@ class Color:
     return all(0.0 <= v <= 1.0 for v in self)
   isLegal = property(fget=__GetIsLegal, doc='Boolean indicating whether the color is within the legal gamut.')
 
+  def __GetNearestLegal(self):
+    def clamp(x, lo, hi):
+      if x < lo:
+        return lo
+      elif x > hi:
+        return hi
+      else:
+        return x
+    return Color.NewFromRgb(*[clamp(v, 0.0, 1.0) for v in self])
+  nearestLegal = property(fget=__GetNearestLegal, doc='The nearest legal color.')
+
   @staticmethod
   def RgbToHsl(r, g, b):
     '''Convert the color from RGB coordinates to HSL.
