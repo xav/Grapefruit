@@ -349,6 +349,12 @@ class ColorTest(GrapeFruitTestCase):
     c2 = grapefruit.Color.NewFromRgb(1, 1, 1, alpha = 0.6)
     self.assertEqual(c1.Blend(c2), (1, 0.75, 0.5, 0.4))
 
+  def testNearestLegal(self):
+      c = grapefruit.Color.NewFromRgb(1.1, -0.1, 0.5, alpha=1.1)
+      self.assertFalse(c.isLegal)
+      self.assertNear(c.nearestLegal.rgb, (1.0, 0.0, 0.5))
+      self.assertNear(c.nearestLegal.alpha, 1.0)
+
 
 if __name__ == '__main__':
   unittest.main()
