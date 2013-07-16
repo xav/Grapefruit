@@ -56,10 +56,10 @@ def Read(file):
   return open(file).read()
 
 def BuildLongDescription():
-  return '\n'.join([Read('README'), Read('CHANGES')])
+  return '\n'.join([Read('README.rst'), Read('CHANGES')])
 
 def Main():
-  # Build the long_description from the README and CHANGES files
+  # Build the long_description from the README.rst and CHANGES files
   METADATA['long_description'] = BuildLongDescription()
   
   # Use setuptools if available, otherwise fallback and use distutils
