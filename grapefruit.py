@@ -19,6 +19,8 @@
 
 from __future__ import division
 
+import sys
+
 # $Id$
 __author__ = 'Xavier Basty <xbasty@gmail.com>'
 __version__ = '0.1a3'
@@ -308,11 +310,9 @@ class Color:
     try:
       if isinstance(other, Color):
         return (self.__rgb==other.__rgb) and (self.__a==other.__a)
-
       if len(other) != 4:
         return False
-      rgba = self.__rgb + (self.__a,)
-      return all(a == b for a, b in zip(rgba, other))
+      return list(self.__rgb + (self.__a,)) == list(other)
     except TypeError:
       return False
     except AttributeError:
@@ -330,14 +330,15 @@ class Color:
     '''
     return '(%g, %g, %g, %g)' % (self.__rgb + (self.__a,))
 
-  def __unicode__(self):
-    '''A unicode string representation of this grapefruit.Color instance.
+  if sys.version_info[0] < 3:
+    def __unicode__(self):
+      '''A unicode string representation of this grapefruit.Color instance.
 
-    Returns:
-      The RGBA representation of this grapefruit.Color instance.
+      Returns:
+        The RGBA representation of this grapefruit.Color instance.
 
-    '''
-    return u'(%g, %g, %g, %g)' % (self.__rgb + (self.__a,))
+      '''
+      return unicode('%g, %g, %g, %g)') % (self.__rgb + (self.__a,))
 
   def __iter__(self):
     return iter(self.__rgb + (self.__a,))
@@ -882,6 +883,52 @@ class Color:
 
     '''
     return (1-c, 1-m, 1-y)
+
+  @staticmethod
+  def RgbToIntTuple(r, g, b):
+    '''Convert the color from (r, g, b) to an int tuple.
+
+    Parameters:
+      :r:
+        The Red component value [0...1]
+      :g:
+        The Green component value [0...1]
+      :b:
+        The Blue component value [0...1]
+
+    Returns:
+      The color as an (r, g, b) tuple in the range:
+      r[0...255],
+      g[0...2551],
+      b[0...2551]
+
+    >>> Color.RgbToIntTuple(1, 0.5, 0)
+    (255, 128, 0)
+
+    '''
+    return tuple(int(round(v*255)) for v in (r, g, b))
+
+  @staticmethod
+  def IntTupleToRgb(intTuple):
+    '''Convert a tuple of ints to (r, g, b).
+
+    Parameters:
+      The color as an (r, g, b) integer tuple in the range:
+      r[0...255],
+      g[0...255],
+      b[0...255]
+
+    Returns:
+      The color as an (r, g, b) tuple in the range:
+      r[0...1],
+      g[0...1],
+      b[0...1]
+
+    >>> '(%g, %g, %g)' % Color.IntTupleToRgb((255, 128, 0))
+    '(1, 0.501961, 0)'
+
+    '''
+    return tuple(v / 255 for v in intTuple)
 
   @staticmethod
   def RgbToHtml(r, g, b):
@@ -1478,6 +1525,10 @@ class Color:
   def __GetCMYK(self):
     return Color.CmyToCmyk(*Color.RgbToCmy(*self.__rgb))
   cmyk = property(fget=__GetCMYK, doc='The CMYK values of this Color.')
+
+  def __GetIntTuple(self):
+    return Color.RgbToIntTuple(*self.__rgb)
+  intTuple = property(fget=__GetIntTuple, doc='This Color as a tuple of integers in the range [0...255]')
 
   def __GetHTML(self):
     return Color.RgbToHtml(*self.__rgb)

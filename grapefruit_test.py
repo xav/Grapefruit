@@ -245,6 +245,7 @@ class ColorTest(GrapeFruitTestCase):
     self.assertNear(self.rgbCol.lab, (66.9518, 0.4308, 0.7397))
     self.assertEqual(self.rgbCol.cmy, (0, 0.5, 1))
     self.assertEqual(self.rgbCol.cmyk, (0, 0.5, 1, 0))
+    self.assertEqual(self.rgbCol.intTuple, (255, 128, 0))
     self.assertEqual(self.rgbCol.html, '#ff8000')
     self.assertEqual(self.rgbCol.pil, 0x0080ff)
     self.assertEqual(self.rgbCol.webSafe, (1, 0.6, 0))
