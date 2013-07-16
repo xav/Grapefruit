@@ -25,11 +25,6 @@ import unittest
 import doctest
 import grapefruit
 
-# Also run doctests.
-def load_tests(loader, tests, ignore):
-    tests.addTests(doctest.DocTestSuite(grapefruit))
-    return tests
-
 
 class GrapeFruitTestCase(unittest.TestCase):
   def failUnlessNear(self, first, second, diff=9e-5, msg=None):
@@ -39,13 +34,13 @@ class GrapeFruitTestCase(unittest.TestCase):
     '''
     if hasattr(first,'__iter__') and hasattr(second,'__iter__'):
       if len(first) != len(second):
-        raise self.failureException, (msg or "%r != %r" % (first, second))
+        raise self.failureException(msg or "%r != %r" % (first, second))
 
       for f, s in zip(first, second):
         if abs(s-f) > diff:
-          raise self.failureException, (msg or "%r != %r @ %f" % (first, second, diff))
+          raise self.failureException(msg or "%r != %r @ %f" % (first, second, diff))
     elif abs(second-first) > diff:
-      raise self.failureException, (msg or "%r != %r @ %f" % (first, second, diff))
+      raise self.failureException(msg or "%r != %r @ %f" % (first, second, diff))
   assertNear = failUnlessNear
 
 class ConversionTest(GrapeFruitTestCase):
@@ -317,7 +312,7 @@ class ColorTest(GrapeFruitTestCase):
       (0.88, 0.6, 0.32, 1.0), # hsl(30, 0.7, 0.6)
       (1.0, 0.8, 0.6, 1.0))   # hsl(30, 1, 0.8)
     scheme = self.rgbCol.MonochromeScheme()
-    for i in xrange(len(monochrome)):
+    for i in range(len(monochrome)):
       self.assertNear(scheme[i], monochrome[i])
 
   def testTriadicScheme(self):

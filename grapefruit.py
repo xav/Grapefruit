@@ -72,7 +72,7 @@ class Color:
   To get the complementary of a color:
 
     >>> compl = col.ComplementaryColor(mode='rgb')
-    >>> print compl.hsl
+    >>> compl.hsl
     (210.0, 1.0, 0.5)
 
   To directly convert RGB values to their HSL equivalent:
@@ -287,7 +287,7 @@ class Color:
 
     '''
     if not(isinstance(values, tuple)):
-      raise TypeError, 'values must be a tuple'
+      raise TypeError('values must be a tuple')
 
     if mode=='rgb':
       self.__rgb = values
@@ -312,7 +312,7 @@ class Color:
       if len(other) != 4:
         return False
       rgba = self.__rgb + (self.__a,)
-      return reduce(lambda x, y: x and (y[0]==y[1]), zip(rgba, other), True)
+      return all(a == b for a, b in zip(rgba, other))
     except TypeError:
       return False
     except AttributeError:
@@ -938,7 +938,7 @@ class Color:
     html = html.strip().lower()
     if html[0]=='#':
       html = html[1:]
-    elif Color.NAMED_COLOR.has_key(html):
+    elif html in Color.NAMED_COLOR:
       html = Color.NAMED_COLOR[html][1:]
 
     if len(html)==6:
@@ -946,7 +946,7 @@ class Color:
     elif len(html)==3:
       rgb = ['%c%c' % (v,v) for v in html]
     else:
-      raise ValueError, 'input #%s is not in #RRGGBB format' % html
+      raise ValueError('input #%s is not in #RRGGBB format' % html)
 
     return tuple(((int(n, 16) / 255.0) for n in rgb))
 
@@ -1734,7 +1734,7 @@ class Color:
     rgba2 = target.__rgb + (target.__a,)
 
     steps += 1
-    for n in xrange(1, steps):
+    for n in range(1, steps):
       d = 1.0*n/steps
       r = (rgba1[0]*(1-d)) + (rgba2[0]*d)
       g = (rgba1[1]*(1-d)) + (rgba2[1]*d)
