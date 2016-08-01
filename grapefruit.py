@@ -74,7 +74,7 @@ class Color:
   To get the complementary of a color:
 
     >>> compl = col.ComplementaryColor(mode='rgb')
-    >>> print(compl.hsl)
+    >>> compl.hsl
     (210.0, 1.0, 0.5)
 
   To directly convert RGB values to their HSL equivalent:
