@@ -356,9 +356,11 @@ class ColorTest(GrapeFruitTestCase):
       self.assertNear(c.nearestLegal.rgb, (1.0, 0.0, 0.5))
       self.assertNear(c.nearestLegal.alpha, 1.0)
 
+def suite():
+      return unittest.TestLoader().loadTestsFromName(__name__)
 
 if __name__ == '__main__':
-  unittest.main()
+  unittest.main(defaultTest='suite')
   pass
 
 # vim: ts=2 sts=2 sw=2 et
