@@ -31,9 +31,9 @@ METADATA = dict(
   author_email = 'xbasty@gmail.com',
   description = 'A module to manipulate color information easily.',
   license = 'Apache License 2.0',
-  url = 'http://code.google.com/p/grapefruit/',
-  download_url = 'http://grapefruit.googlecode.com/files/grapefruit-%s.tar.gz' % \
-    __version__,
+  url = 'https://github.com/xav/Grapefruit/',
+  download_url = 'https://github.com/xav/Grapefruit/releases/download/{0}/'
+                 'grapefruit-{0}.tar.gz'.format( __version__),
   keywords ='color conversion',
 )
 
