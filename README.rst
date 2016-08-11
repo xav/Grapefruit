@@ -1,12 +1,12 @@
-=====================
-README for GrapeFruit
-=====================
+==========
+GrapeFruit
+==========
 
 .. image:: https://img.shields.io/pypi/v/grapefruit.svg?style=flat
    :target: https://pypi.python.org/pypi/grapefruit/
    :alt: Latest PyPI version
 
-.. image:: https://img.shields.io/travis/xav/grapefruit/master.svg?style=flat
+.. image:: https://img.shields.io/travis/xav/Grapefruit/master.svg
    :target: https://travis-ci.org/xav/grapefruit/
    :alt: Travis CI build status
 
