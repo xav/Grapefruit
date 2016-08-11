@@ -1,0 +1,2 @@
+gitchangelog==2.3.0
+Sphinx==1.4.5
