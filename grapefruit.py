@@ -1035,7 +1035,7 @@ class Color:
 
     >>> import grapefruit
     >>> r, g, b = 1, 0.5, 0
-    >>> col = grapefruit.Color.NewFromRgb(r, g, b)
+    >>> col = grapefruit.Color.FromRgb(r, g, b)
 
   To get the values of the color in another colorspace:
 
@@ -1055,7 +1055,7 @@ class Color:
   """
 
   @staticmethod
-  def NewFromRgb(r, g, b, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromRgb(r, g, b, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed RGB values.
 
     Parameters:
@@ -1073,16 +1073,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromRgb(1.0, 0.5, 0.0)
+    >>> Color.FromRgb(1.0, 0.5, 0.0)
     (1.0, 0.5, 0.0, 1.0)
-    >>> Color.NewFromRgb(1.0, 0.5, 0.0, 0.5)
+    >>> Color.FromRgb(1.0, 0.5, 0.0, 0.5)
     (1.0, 0.5, 0.0, 0.5)
 
     """
     return Color((r, g, b), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromHsl(h, s, l, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromHsl(h, s, l, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed HSL values.
 
     Parameters:
@@ -1100,16 +1100,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5)
+    >>> Color.FromHsl(30, 1, 0.5)
     (1.0, 0.5, 0.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5, 0.5)
+    >>> Color.FromHsl(30, 1, 0.5, 0.5)
     (1.0, 0.5, 0.0, 0.5)
 
     """
     return Color((h, s, l), 'hsl', alpha, wref)
 
   @staticmethod
-  def NewFromHsv(h, s, v, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromHsv(h, s, v, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed HSV values.
 
     Parameters:
@@ -1127,9 +1127,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsv(30, 1, 1)
+    >>> Color.FromHsv(30, 1, 1)
     (1.0, 0.5, 0.0, 1.0)
-    >>> Color.NewFromHsv(30, 1, 1, 0.5)
+    >>> Color.FromHsv(30, 1, 1, 0.5)
     (1.0, 0.5, 0.0, 0.5)
 
     """
@@ -1137,7 +1137,7 @@ class Color:
     return Color((h, s, l), 'hsl', alpha, wref)
 
   @staticmethod
-  def NewFromYiq(y, i, q, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromYiq(y, i, q, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed YIQ values.
 
     Parameters:
@@ -1155,16 +1155,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05))
+    >>> str(Color.FromYiq(0.5922, 0.45885,-0.05))
     '(0.999902, 0.499955, -6.6905e-05, 1)'
-    >>> str(Color.NewFromYiq(0.5922, 0.45885,-0.05, 0.5))
+    >>> str(Color.FromYiq(0.5922, 0.45885,-0.05, 0.5))
     '(0.999902, 0.499955, -6.6905e-05, 0.5)'
 
     """
     return Color(yiq_to_rgb(y, i, q), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromYuv(y, u, v, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromYuv(y, u, v, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed YUV values.
 
     Parameters:
@@ -1182,16 +1182,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575))
+    >>> str(Color.FromYuv(0.5925, -0.2916, 0.3575))
     '(0.999989, 0.500015, -6.3276e-05, 1)'
-    >>> str(Color.NewFromYuv(0.5925, -0.2916, 0.3575, 0.5))
+    >>> str(Color.FromYuv(0.5925, -0.2916, 0.3575, 0.5))
     '(0.999989, 0.500015, -6.3276e-05, 0.5)'
 
     """
     return Color(yuv_to_rgb(y, u, v), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromXyz(x, y, z, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromXyz(x, y, z, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed CIE-XYZ values.
 
     Parameters:
@@ -1209,16 +1209,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137))
+    >>> str(Color.FromXyz(0.488941, 0.365682, 0.0448137))
     '(1, 0.5, 6.81883e-08, 1)'
-    >>> str(Color.NewFromXyz(0.488941, 0.365682, 0.0448137, 0.5))
+    >>> str(Color.FromXyz(0.488941, 0.365682, 0.0448137, 0.5))
     '(1, 0.5, 6.81883e-08, 0.5)'
 
     """
     return Color(xyz_to_rgb(x, y, z), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromLab(l, a, b, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromLab(l, a, b, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed CIE-LAB values.
 
     Parameters:
@@ -1236,20 +1236,20 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692))
+    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692))
     '(1, 0.5, 1.09491e-08, 1)'
-    >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, wref=WHITE_REFERENCE['std_D50']))
+    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, wref=WHITE_REFERENCE['std_D50']))
     '(1.01238, 0.492011, -0.14311, 1)'
-    >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5))
+    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, 0.5))
     '(1, 0.5, 1.09491e-08, 0.5)'
-    >>> str(Color.NewFromLab(66.9518, 0.43084, 0.739692, 0.5, WHITE_REFERENCE['std_D50']))
+    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, 0.5, WHITE_REFERENCE['std_D50']))
     '(1.01238, 0.492011, -0.14311, 0.5)'
 
     """
     return Color(xyz_to_rgb(*lab_to_xyz(l, a, b, wref)), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromCmy(c, m, y, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromCmy(c, m, y, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed CMY values.
 
     Parameters:
@@ -1267,16 +1267,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromCmy(0, 0.5, 1)
+    >>> Color.FromCmy(0, 0.5, 1)
     (1, 0.5, 0, 1.0)
-    >>> Color.NewFromCmy(0, 0.5, 1, 0.5)
+    >>> Color.FromCmy(0, 0.5, 1, 0.5)
     (1, 0.5, 0, 0.5)
 
     """
     return Color(cmy_to_rgb(c, m, y), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromCmyk(c, m, y, k, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromCmyk(c, m, y, k, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed CMYK values.
 
     Parameters:
@@ -1296,16 +1296,16 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromCmyk(1, 0.32, 0, 0.5))
+    >>> str(Color.FromCmyk(1, 0.32, 0, 0.5))
     '(0, 0.34, 0.5, 1)'
-    >>> str(Color.NewFromCmyk(1, 0.32, 0, 0.5, 0.5))
+    >>> str(Color.FromCmyk(1, 0.32, 0, 0.5, 0.5))
     '(0, 0.34, 0.5, 0.5)'
 
     """
     return Color(cmy_to_rgb(*cmyk_to_cmy(c, m, y, k)), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromHtml(html, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromHtml(html, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed HTML color definition.
 
     Parameters:
@@ -1319,24 +1319,24 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromHtml('#ff8000'))
+    >>> str(Color.FromHtml('#ff8000'))
     '(1, 0.501961, 0, 1)'
-    >>> str(Color.NewFromHtml('ff8000'))
+    >>> str(Color.FromHtml('ff8000'))
     '(1, 0.501961, 0, 1)'
-    >>> str(Color.NewFromHtml('#f60'))
+    >>> str(Color.FromHtml('#f60'))
     '(1, 0.4, 0, 1)'
-    >>> str(Color.NewFromHtml('f60'))
+    >>> str(Color.FromHtml('f60'))
     '(1, 0.4, 0, 1)'
-    >>> str(Color.NewFromHtml('lemonchiffon'))
+    >>> str(Color.FromHtml('lemonchiffon'))
     '(1, 0.980392, 0.803922, 1)'
-    >>> str(Color.NewFromHtml('#ff8000', 0.5))
+    >>> str(Color.FromHtml('#ff8000', 0.5))
     '(1, 0.501961, 0, 0.5)'
 
     """
     return Color(html_to_rgb(html), 'rgb', alpha, wref)
 
   @staticmethod
-  def NewFromPil(pil, alpha=1.0, wref=_DEFAULT_WREF):
+  def FromPil(pil, alpha=1.0, wref=_DEFAULT_WREF):
     """Create a new instance based on the specifed PIL color.
 
     Parameters:
@@ -1350,14 +1350,13 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.NewFromPil(0x0080ff))
+    >>> str(Color.FromPil(0x0080ff))
     '(1, 0.501961, 0, 1)'
-    >>> str(Color.NewFromPil(0x0080ff, 0.5))
+    >>> str(Color.FromPil(0x0080ff, 0.5))
     '(1, 0.501961, 0, 0.5)'
 
     """
     return Color(pil_to_rgb(pil), 'rgb', alpha, wref)
-
 
   def __init__(self, values, mode='rgb', alpha=1.0, wref=_DEFAULT_WREF):
     """Instantiate a new grapefruit.Color object.
@@ -1443,7 +1442,7 @@ class Color:
         return hi
       else:
         return x
-    return Color.NewFromRgb(*[clamp(v, 0.0, 1.0) for v in self])
+    return Color.FromRgb(*[clamp(v, 0.0, 1.0) for v in self])
   nearestLegal = property(fget=__GetNearestLegal, doc="The nearest legal color.")
 
   def __GetAlpha(self):
@@ -1525,7 +1524,7 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromRgb(1.0, 0.5, 0.0, 1.0).ColorWithAlpha(0.5)
+    >>> Color.FromRgb(1.0, 0.5, 0.0, 1.0).ColorWithAlpha(0.5)
     (1.0, 0.5, 0.0, 0.5)
 
     """
@@ -1545,7 +1544,7 @@ class Color:
       A grapefruit.Color instance.
 
 
-    >>> c = Color.NewFromRgb(1.0, 0.5, 0.0, 1.0, WHITE_REFERENCE['std_D65'])
+    >>> c = Color.FromRgb(1.0, 0.5, 0.0, 1.0, WHITE_REFERENCE['std_D65'])
 
     >>> c2 = c.ColorWithWhiteRef(WHITE_REFERENCE['sup_D50'])
     >>> c2.rgb
@@ -1566,7 +1565,7 @@ class Color:
     """
     if labAsRef:
       l, a, b = self.__GetLAB()
-      return Color.NewFromLab(l, a, b, self.__a, wref)
+      return Color.FromLab(l, a, b, self.__a, wref)
     else:
       return Color(self.__rgb, 'rgb', self.__a, wref)
 
@@ -1580,9 +1579,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithHue(60)
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithHue(60)
     (1.0, 1.0, 0.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithHue(60).hsl
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithHue(60).hsl
     (60, 1, 0.5)
 
     """
@@ -1603,9 +1602,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithSaturation(0.5)
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithSaturation(0.5)
     (0.75, 0.5, 0.25, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithSaturation(0.5).hsl
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithSaturation(0.5).hsl
     (30, 0.5, 0.5)
 
     """
@@ -1622,9 +1621,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithLightness(0.25)
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithLightness(0.25)
     (0.5, 0.25, 0.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ColorWithLightness(0.25).hsl
+    >>> Color.FromHsl(30, 1, 0.5).ColorWithLightness(0.25).hsl
     (30, 1, 0.25)
 
     """
@@ -1642,9 +1641,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).DarkerColor(0.25)
+    >>> Color.FromHsl(30, 1, 0.5).DarkerColor(0.25)
     (0.5, 0.25, 0.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).DarkerColor(0.25).hsl
+    >>> Color.FromHsl(30, 1, 0.5).DarkerColor(0.25).hsl
     (30, 1, 0.25)
 
     """
@@ -1662,9 +1661,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).LighterColor(0.25)
+    >>> Color.FromHsl(30, 1, 0.5).LighterColor(0.25)
     (1.0, 0.75, 0.5, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).LighterColor(0.25).hsl
+    >>> Color.FromHsl(30, 1, 0.5).LighterColor(0.25).hsl
     (30, 1, 0.75)
 
     """
@@ -1682,9 +1681,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 0.5, 0.5).Saturate(0.25)
+    >>> Color.FromHsl(30, 0.5, 0.5).Saturate(0.25)
     (0.875, 0.5, 0.125, 1.0)
-    >>> Color.NewFromHsl(30, 0.5, 0.5).Saturate(0.25).hsl
+    >>> Color.FromHsl(30, 0.5, 0.5).Saturate(0.25).hsl
     (30, 0.75, 0.5)
 
     """
@@ -1702,9 +1701,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 0.5, 0.5).Desaturate(0.25)
+    >>> Color.FromHsl(30, 0.5, 0.5).Desaturate(0.25)
     (0.625, 0.5, 0.375, 1.0)
-    >>> Color.NewFromHsl(30, 0.5, 0.5).Desaturate(0.25).hsl
+    >>> Color.FromHsl(30, 0.5, 0.5).Desaturate(0.25).hsl
     (30, 0.25, 0.5)
 
     """
@@ -1718,7 +1717,7 @@ class Color:
       A tuple of two grapefruit.Color instances which are the two
       web safe colors closest this one.
 
-    >>> c = Color.NewFromRgb(1.0, 0.45, 0.0)
+    >>> c = Color.FromRgb(1.0, 0.45, 0.0)
     >>> c1, c2 = c.WebSafeDither()
     >>> str(c1)
     '(1, 0.4, 0, 1)'
@@ -1743,8 +1742,8 @@ class Color:
     Returns:
       A list of grapefruit.Color instances.
 
-    >>> c1 = Color.NewFromRgb(1.0, 0.0, 0.0, alpha=1)
-    >>> c2 = Color.NewFromRgb(0.0, 1.0, 0.0, alpha=0)
+    >>> c1 = Color.FromRgb(1.0, 0.0, 0.0, alpha=1)
+    >>> c2 = Color.FromRgb(0.0, 1.0, 0.0, alpha=0)
     >>> c1.Gradient(c2, 3)
     [(0.75, 0.25, 0.0, 0.75), (0.5, 0.5, 0.0, 0.5), (0.25, 0.75, 0.0, 0.25)]
 
@@ -1776,9 +1775,9 @@ class Color:
     Returns:
       A grapefruit.Color instance.
 
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb')
+    >>> Color.FromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb')
     (0.0, 0.5, 1.0, 1.0)
-    >>> Color.NewFromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb').hsl
+    >>> Color.FromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb').hsl
     (210, 1, 0.5)
 
     """
@@ -1797,7 +1796,7 @@ class Color:
       A tuple of 4 grapefruit.Color in the same hue as this one,
       with varying saturation/lightness.
 
-    >>> c = Color.NewFromHsl(30, 0.5, 0.5)
+    >>> c = Color.FromHsl(30, 0.5, 0.5)
     >>> ['(%g, %g, %g)' % clr.hsl for clr in c.MonochromeScheme()]
     ['(30, 0.2, 0.8)', '(30, 0.5, 0.3)', '(30, 0.2, 0.6)', '(30, 0.5, 0.8)']
 
@@ -1840,7 +1839,7 @@ class Color:
       A tuple of two grapefruit.Color forming a color triad with
       this one or a split complementary.
 
-    >>> c1 = Color.NewFromHsl(30, 1, 0.5)
+    >>> c1 = Color.FromHsl(30, 1, 0.5)
 
     >>> c2, c3 = c1.TriadicScheme(mode='rgb')
     >>> c2.hsl
@@ -1884,7 +1883,7 @@ class Color:
       A tuple of three grapefruit.Color forming a color tetrad with
       this one.
 
-    >>> col = Color.NewFromHsl(30, 1, 0.5)
+    >>> col = Color.FromHsl(30, 1, 0.5)
     >>> [c.hsl for c in col.TetradicScheme(mode='rgb', angle=30)]
     [(90, 1, 0.5), (210, 1, 0.5), (270, 1, 0.5)]
 
@@ -1917,7 +1916,7 @@ class Color:
     Returns:
       A tuple of grapefruit.Colors analogous to this one.
 
-    >>> c1 = Color.NewFromHsl(30, 1, 0.5)
+    >>> c1 = Color.FromHsl(30, 1, 0.5)
 
     >>> c2, c3 = c1.AnalogousScheme(angle=60, mode='rgb')
     >>> c2.hsl
@@ -1956,8 +1955,8 @@ class Color:
       A grapefruit.Color instance which is the result of alpha-blending
       this color on the other one.
 
-    >>> c1 = Color.NewFromRgb(1, 0.5, 0, 0.2)
-    >>> c2 = Color.NewFromRgb(1, 1, 1, 0.8)
+    >>> c1 = Color.FromRgb(1, 0.5, 0, 0.2)
+    >>> c2 = Color.FromRgb(1, 1, 1, 0.8)
     >>> c3 = c1.AlphaBlend(c2)
     >>> str(c3)
     '(1, 0.875, 0.75, 0.84)'
@@ -1989,8 +1988,8 @@ class Color:
       A grapefruit.Color instance which is the result of blending
       this color on the other one.
 
-    >>> c1 = Color.NewFromRgb(1, 0.5, 0, 0.2)
-    >>> c2 = Color.NewFromRgb(1, 1, 1, 0.6)
+    >>> c1 = Color.FromRgb(1, 0.5, 0, 0.2)
+    >>> c2 = Color.FromRgb(1, 1, 1, 0.6)
     >>> c3 = c1.Blend(c2)
     >>> str(c3)
     '(1, 0.75, 0.5, 0.4)'
