@@ -1074,9 +1074,9 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromRgb(1.0, 0.5, 0.0)
-    (1.0, 0.5, 0.0, 1.0)
+    Color(1.0, 0.5, 0.0, 1.0)
     >>> Color.FromRgb(1.0, 0.5, 0.0, 0.5)
-    (1.0, 0.5, 0.0, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     return Color((r, g, b), 'rgb', alpha, wref)
@@ -1101,9 +1101,9 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5)
-    (1.0, 0.5, 0.0, 1.0)
+    Color(1.0, 0.5, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5, 0.5)
-    (1.0, 0.5, 0.0, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     return Color((h, s, l), 'hsl', alpha, wref)
@@ -1128,9 +1128,9 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsv(30, 1, 1)
-    (1.0, 0.5, 0.0, 1.0)
+    Color(1.0, 0.5, 0.0, 1.0)
     >>> Color.FromHsv(30, 1, 1, 0.5)
-    (1.0, 0.5, 0.0, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     h2, s, l = rgb_to_hsl(*hsv_to_rgb(h, s, v))
@@ -1268,9 +1268,9 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromCmy(0, 0.5, 1)
-    (1, 0.5, 0, 1.0)
+    Color(1, 0.5, 0, 1.0)
     >>> Color.FromCmy(0, 0.5, 1, 0.5)
-    (1, 0.5, 0, 0.5)
+    Color(1, 0.5, 0, 0.5)
 
     """
     return Color(cmy_to_rgb(c, m, y), 'rgb', alpha, wref)
@@ -1403,7 +1403,7 @@ class Color:
       return False
 
   def __repr__(self):
-    return str(self.__rgb + (self.__a,))
+    return "Color{}".format(self.__rgb + (self.__a,))
 
   def __str__(self):
     """A string representation of this grapefruit.Color instance.
@@ -1525,7 +1525,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromRgb(1.0, 0.5, 0.0, 1.0).ColorWithAlpha(0.5)
-    (1.0, 0.5, 0.0, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     return Color(self.__rgb, 'rgb', alpha, self.__wref)
@@ -1580,7 +1580,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).ColorWithHue(60)
-    (1.0, 1.0, 0.0, 1.0)
+    Color(1.0, 1.0, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).ColorWithHue(60).hsl
     (60, 1, 0.5)
 
@@ -1603,7 +1603,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).ColorWithSaturation(0.5)
-    (0.75, 0.5, 0.25, 1.0)
+    Color(0.75, 0.5, 0.25, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).ColorWithSaturation(0.5).hsl
     (30, 0.5, 0.5)
 
@@ -1622,7 +1622,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).ColorWithLightness(0.25)
-    (0.5, 0.25, 0.0, 1.0)
+    Color(0.5, 0.25, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).ColorWithLightness(0.25).hsl
     (30, 1, 0.25)
 
@@ -1642,7 +1642,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).DarkerColor(0.25)
-    (0.5, 0.25, 0.0, 1.0)
+    Color(0.5, 0.25, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).DarkerColor(0.25).hsl
     (30, 1, 0.25)
 
@@ -1662,7 +1662,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).LighterColor(0.25)
-    (1.0, 0.75, 0.5, 1.0)
+    Color(1.0, 0.75, 0.5, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).LighterColor(0.25).hsl
     (30, 1, 0.75)
 
@@ -1682,7 +1682,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 0.5, 0.5).Saturate(0.25)
-    (0.875, 0.5, 0.125, 1.0)
+    Color(0.875, 0.5, 0.125, 1.0)
     >>> Color.FromHsl(30, 0.5, 0.5).Saturate(0.25).hsl
     (30, 0.75, 0.5)
 
@@ -1702,7 +1702,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 0.5, 0.5).Desaturate(0.25)
-    (0.625, 0.5, 0.375, 1.0)
+    Color(0.625, 0.5, 0.375, 1.0)
     >>> Color.FromHsl(30, 0.5, 0.5).Desaturate(0.25).hsl
     (30, 0.25, 0.5)
 
@@ -1745,7 +1745,7 @@ class Color:
     >>> c1 = Color.FromRgb(1.0, 0.0, 0.0, alpha=1)
     >>> c2 = Color.FromRgb(0.0, 1.0, 0.0, alpha=0)
     >>> c1.Gradient(c2, 3)
-    [(0.75, 0.25, 0.0, 0.75), (0.5, 0.5, 0.0, 0.5), (0.25, 0.75, 0.0, 0.25)]
+    [Color(0.75, 0.25, 0.0, 0.75), Color(0.5, 0.5, 0.0, 0.5), Color(0.25, 0.75, 0.0, 0.25)]
 
     """
     gradient = []
@@ -1776,7 +1776,7 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb')
-    (0.0, 0.5, 1.0, 1.0)
+    Color(0.0, 0.5, 1.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).ComplementaryColor(mode='rgb').hsl
     (210, 1, 0.5)
 
