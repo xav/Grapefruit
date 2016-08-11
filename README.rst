@@ -2,6 +2,19 @@
 README for GrapeFruit
 =====================
 
+.. image:: https://img.shields.io/pypi/v/grapefruit.svg?style=flat
+   :target: https://pypi.python.org/pypi/grapefruit/
+   :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/travis/xav/grapefruit/master.svg?style=flat
+   :target: https://travis-ci.org/xav/grapefruit/
+   :alt: Travis CI build status
+
+.. image:: https://coveralls.io/repos/github/xav/Grapefruit/badge.svg?branch=master
+   :target: https://coveralls.io/github/xav/Grapefruit?branch=master
+   :alt: Test coverage
+
+
 GrapeFruit is a pure Python module that let you easily manipulate and convert color information.
 Its Primary goal is to be *natural* and *flexible*.
 
@@ -17,20 +30,7 @@ The following color systems are supported by GrapeFruit:
   * CMYK
   * HTML/CSS color definition (#RRGGBB, #RGB or the X11 color name)
   * RYB (artistic color wheel
-Installing
-============
 
-**From the sources:**
-
-Download the latest grapefruit library from:
-
-  https://github.com/xav/Grapefruit
-
-
-Untar the source distribution and run::
-
-  $ python setup.py build
-  $ python setup.py install
 
 License
 =========
