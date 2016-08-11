@@ -7,7 +7,7 @@ Its Primary goal is to be *natural* and *flexible*.
 
 The following color systems are supported by GrapeFruit:
   * RGB (sRGB)
-  * HSL 
+  * HSL
   * HSV
   * YIQ
   * YUV
@@ -32,49 +32,19 @@ Untar the source distribution and run::
   $ python setup.py build
   $ python setup.py install
 
-
-Testing
-=========
-
-With setuptools installed::
-
-  $ python setup.py test
-
-Without setuptools installed::
-
-  $ python grapefruit_test.py
-
-
-Documentation
-===============
-
-You can download a compiled version of the documentation at:
-
-  https://github.com/xav/Grapefruit/downloads
-
-The documentation is generated from reStructuredText sources by Sphinx.
-If you need to build it, go into the doc folder and run::
-
-  make <builder>
-
-Or, if you're running windows::
-
-  makedoc.cmd
-
-
 License
 =========
 
 ::
 
   Copyright (c) 2008, Xavier Basty
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
   http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
