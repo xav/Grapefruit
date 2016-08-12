@@ -450,8 +450,8 @@ def yiq_to_rgb(y, i, q):
     g[0...1],
     b[0...1]
 
-  >>> '(%g, %g, %g)' % yiq_to_rgb(0.592263, 0.458874, -0.0499818)
-  '(1, 0.5, 5.442e-07)'
+  >>> '({}, {}, {})'.format(*[round(v, 6) for v in yiq_to_rgb(0.592263, 0.458874, -0.0499818)])
+  '(1.0, 0.5, 1e-06)'
 
   """
   r = y + (i * 0.9562) + (q * 0.6210)
@@ -1045,7 +1045,7 @@ class Color(object):
   To get the complementary of a color:
 
     >>> compl = col.complementary_color(mode='rgb')
-    >>> print(compl.hsl)
+    >>> compl.hsl
     (210.0, 1.0, 0.5)
 
   To directly convert RGB values to their HSL equivalent:
@@ -1159,10 +1159,10 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromYiq(0.5922, 0.45885,-0.05))
-    '(0.999902, 0.499955, -6.6905e-05, 1)'
-    >>> str(Color.FromYiq(0.5922, 0.45885,-0.05, 0.5))
-    '(0.999902, 0.499955, -6.6905e-05, 0.5)'
+    >>> Color.FromYiq(0.5922, 0.45885,-0.05)
+    Color(0.999902, 0.499955, -6.7e-05, 1.0)
+    >>> Color.FromYiq(0.5922, 0.45885,-0.05, 0.5)
+    Color(0.999902, 0.499955, -6.7e-05, 0.5)
 
     """
     return Color(yiq_to_rgb(y, i, q), 'rgb', alpha, wref)
@@ -1186,10 +1186,10 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromYuv(0.5925, -0.2916, 0.3575))
-    '(0.999989, 0.500015, -6.3276e-05, 1)'
-    >>> str(Color.FromYuv(0.5925, -0.2916, 0.3575, 0.5))
-    '(0.999989, 0.500015, -6.3276e-05, 0.5)'
+    >>> Color.FromYuv(0.5925, -0.2916, 0.3575)
+    Color(0.999989, 0.500015, -6.3e-05, 1.0)
+    >>> Color.FromYuv(0.5925, -0.2916, 0.3575, 0.5)
+    Color(0.999989, 0.500015, -6.3e-05, 0.5)
 
     """
     return Color(yuv_to_rgb(y, u, v), 'rgb', alpha, wref)
@@ -1213,10 +1213,10 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromXyz(0.488941, 0.365682, 0.0448137))
-    '(1, 0.5, 6.81883e-08, 1)'
-    >>> str(Color.FromXyz(0.488941, 0.365682, 0.0448137, 0.5))
-    '(1, 0.5, 6.81883e-08, 0.5)'
+    >>> Color.FromXyz(0.488941, 0.365682, 0.0448137)
+    Color(1.0, 0.5, 0.0, 1.0)
+    >>> Color.FromXyz(0.488941, 0.365682, 0.0448137, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     return Color(xyz_to_rgb(x, y, z), 'rgb', alpha, wref)
@@ -1240,14 +1240,14 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692))
-    '(1, 0.5, 1.09491e-08, 1)'
-    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, wref=WHITE_REFERENCE['std_D50']))
-    '(1.01238, 0.492011, -0.14311, 1)'
-    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, 0.5))
-    '(1, 0.5, 1.09491e-08, 0.5)'
-    >>> str(Color.FromLab(66.9518, 0.43084, 0.739692, 0.5, WHITE_REFERENCE['std_D50']))
-    '(1.01238, 0.492011, -0.14311, 0.5)'
+    >>> Color.FromLab(66.9518, 0.43084, 0.739692)
+    Color(1.0, 0.5, 0.0, 1.0)
+    >>> Color.FromLab(66.9518, 0.43084, 0.739692, wref=WHITE_REFERENCE['std_D50'])
+    Color(1.012375, 0.492011, -0.14311, 1.0)
+    >>> Color.FromLab(66.9518, 0.43084, 0.739692, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
+    >>> Color.FromLab(66.9518, 0.43084, 0.739692, 0.5, WHITE_REFERENCE['std_D50'])
+    Color(1.012375, 0.492011, -0.14311, 0.5)
 
     """
     return Color(xyz_to_rgb(*lab_to_xyz(l, a, b, wref)), 'rgb', alpha, wref)
@@ -1300,10 +1300,10 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromCmyk(1, 0.32, 0, 0.5))
-    '(0, 0.34, 0.5, 1)'
-    >>> str(Color.FromCmyk(1, 0.32, 0, 0.5, 0.5))
-    '(0, 0.34, 0.5, 0.5)'
+    >>> Color.FromCmyk(1, 0.32, 0, 0.5)
+    Color(0.0, 0.34, 0.5, 1.0)
+    >>> Color.FromCmyk(1, 0.32, 0, 0.5, 0.5)
+    Color(0.0, 0.34, 0.5, 0.5)
 
     """
     return Color(cmy_to_rgb(*cmyk_to_cmy(c, m, y, k)), 'rgb', alpha, wref)
@@ -1323,18 +1323,18 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromHtml('#ff8000'))
-    '(1, 0.501961, 0, 1)'
-    >>> str(Color.FromHtml('ff8000'))
-    '(1, 0.501961, 0, 1)'
-    >>> str(Color.FromHtml('#f60'))
-    '(1, 0.4, 0, 1)'
-    >>> str(Color.FromHtml('f60'))
-    '(1, 0.4, 0, 1)'
-    >>> str(Color.FromHtml('lemonchiffon'))
-    '(1, 0.980392, 0.803922, 1)'
-    >>> str(Color.FromHtml('#ff8000', 0.5))
-    '(1, 0.501961, 0, 0.5)'
+    >>> Color.FromHtml('#ff8000')
+    Color(1.0, 0.501961, 0.0, 1.0)
+    >>> Color.FromHtml('ff8000')
+    Color(1.0, 0.501961, 0.0, 1.0)
+    >>> Color.FromHtml('#f60')
+    Color(1.0, 0.4, 0.0, 1.0)
+    >>> Color.FromHtml('f60')
+    Color(1.0, 0.4, 0.0, 1.0)
+    >>> Color.FromHtml('lemonchiffon')
+    Color(1.0, 0.980392, 0.803922, 1.0)
+    >>> Color.FromHtml('#ff8000', 0.5)
+    Color(1.0, 0.501961, 0.0, 0.5)
 
     """
     return Color(html_to_rgb(html), 'rgb', alpha, wref)
@@ -1354,10 +1354,10 @@ class Color(object):
     Returns:
       A grapefruit.Color instance.
 
-    >>> str(Color.FromPil(0x0080ff))
-    '(1, 0.501961, 0, 1)'
-    >>> str(Color.FromPil(0x0080ff, 0.5))
-    '(1, 0.501961, 0, 0.5)'
+    >>> Color.FromPil(0x0080ff)
+    Color(1.0, 0.501961, 0.0, 1.0)
+    >>> Color.FromPil(0x0080ff, 0.5)
+    Color(1.0, 0.501961, 0.0, 0.5)
 
     """
     return Color(pil_to_rgb(pil), 'rgb', alpha, wref)
@@ -1412,7 +1412,7 @@ class Color(object):
       return False
 
   def __repr__(self):
-    return "Color{}".format(self.__rgb + (self.__a,))
+    return "Color({}, {}, {}, {})".format(*[round(v, 6) for v in (self.__rgb + (self.__a,))])
 
   def __str__(self):
     """A string representation of this grapefruit.Color instance.
@@ -1421,7 +1421,7 @@ class Color(object):
       The RGBA representation of this grapefruit.Color instance.
 
     """
-    return '(%g, %g, %g, %g)' % (self.__rgb + (self.__a,))
+    return "({}, {}, {}, {})".format(*[round(v, 6) for v in (self.__rgb + (self.__a,))])
 
   if sys.version_info[0] < 3:
     def __unicode__(self):
@@ -1431,7 +1431,7 @@ class Color(object):
         The RGBA representation of this grapefruit.Color instance.
 
       """
-      return unicode('%g, %g, %g, %g)') % (self.__rgb + (self.__a,))
+      return unicode("({}, {}, {}, {})".format(*[round(v, 6) for v in (self.__rgb + (self.__a,))]))
 
   def __iter__(self):
     return iter(self.__rgb + (self.__a,))
@@ -2069,8 +2069,8 @@ class Color(object):
     >>> c1 = Color.FromRgb(1, 0.5, 0, 0.2)
     >>> c2 = Color.FromRgb(1, 1, 1, 0.8)
     >>> c3 = c1.alpha_blend(c2)
-    >>> str(c3)
-    '(1, 0.875, 0.75, 0.84)'
+    >>> c3
+    Color(1.0, 0.875, 0.75, 0.84)
 
     """
     # get final alpha channel
@@ -2102,8 +2102,8 @@ class Color(object):
     >>> c1 = Color.FromRgb(1, 0.5, 0, 0.2)
     >>> c2 = Color.FromRgb(1, 1, 1, 0.6)
     >>> c3 = c1.blend(c2)
-    >>> str(c3)
-    '(1, 0.75, 0.5, 0.4)'
+    >>> c3
+    Color(1.0, 0.75, 0.5, 0.4)
 
     """
     dest = 1.0 - percent
