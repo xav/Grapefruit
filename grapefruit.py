@@ -747,8 +747,8 @@ def cmy_to_rgb(c, m, y):
   """
   return (1-c, 1-m, 1-y)
 
-def rgb_to_int_tuple(r, g, b):
-  """Convert the color from (r, g, b) to an int tuple.
+def rgb_to_ints(r, g, b):
+  """Convert the color from (r, g, b) to a tuple of ints.
 
   Parameters:
     :r:
@@ -764,13 +764,13 @@ def rgb_to_int_tuple(r, g, b):
     g[0...2551],
     b[0...2551]
 
-  >>> rgb_to_int_tuple(1, 0.5, 0)
+  >>> rgb_to_ints(1, 0.5, 0)
   (255, 128, 0)
 
   """
   return tuple(int(round(v*255)) for v in (r, g, b))
 
-def int_tuple_to_rgb(int_tuple):
+def ints_to_rgb(ints):
   """Convert a tuple of ints to (r, g, b).
 
   Parameters:
@@ -785,11 +785,11 @@ def int_tuple_to_rgb(int_tuple):
     g[0...1],
     b[0...1]
 
-  >>> '(%g, %g, %g)' % int_tuple_to_rgb((255, 128, 0))
+  >>> '(%g, %g, %g)' % ints_to_rgb((255, 128, 0))
   '(1, 0.501961, 0)'
 
   """
-  return tuple(v / 255 for v in int_tuple)
+  return tuple(v / 255 for v in ints)
 
 def rgb_to_html(r, g, b):
   """Convert the color from (r, g, b) to #RRGGBB.
@@ -1026,7 +1026,7 @@ def ryb_to_rgb(hue):
   return x0 + (x1-x0) * d / 15
 
 
-class Color:
+class Color(object):
   """Hold a color value.
 
   Example usage:
@@ -1053,6 +1053,10 @@ class Color:
     >>> h, s, l = rgb_to_hsl(r, g, b)
 
   """
+
+  # --==================--------------------------------------------------------
+  # -- Creation methods --
+  # --==================--
 
   @staticmethod
   def FromRgb(r, g, b, alpha=1.0, wref=_DEFAULT_WREF):
@@ -1268,9 +1272,9 @@ class Color:
       A grapefruit.Color instance.
 
     >>> Color.FromCmy(0, 0.5, 1)
-    Color(1, 0.5, 0, 1.0)
+    Color(1.0, 0.5, 0.0, 1.0)
     >>> Color.FromCmy(0, 0.5, 1, 0.5)
-    Color(1, 0.5, 0, 0.5)
+    Color(1.0, 0.5, 0.0, 0.5)
 
     """
     return Color(cmy_to_rgb(c, m, y), 'rgb', alpha, wref)
@@ -1358,6 +1362,7 @@ class Color:
     """
     return Color(pil_to_rgb(pil), 'rgb', alpha, wref)
 
+
   def __init__(self, values, mode='rgb', alpha=1.0, wref=_DEFAULT_WREF):
     """Instantiate a new grapefruit.Color object.
 
@@ -1376,16 +1381,20 @@ class Color:
       raise TypeError("values must be a tuple")
 
     if mode=='rgb':
-      self.__rgb = values
-      self.__hsl = rgb_to_hsl(*values)
+      self.__rgb = tuple([float(v) for v in values])
+      self.__hsl = rgb_to_hsl(*self.__rgb)
     elif mode=='hsl':
-      self.__hsl = values
-      self.__rgb = hsl_to_rgb(*values)
+      self.__hsl = tuple([float(v) for v in values])
+      self.__rgb = hsl_to_rgb(*self.__hsl)
     else:
       raise ValueError("Invalid color mode: " + mode)
 
     self.__a = alpha
     self.__wref = wref
+
+  # --=====================-----------------------------------------------------
+  # -- Convenience methods --
+  # --=====================--
 
   def __ne__(self, other):
     return not self.__eq__(other)
@@ -1393,7 +1402,7 @@ class Color:
   def __eq__(self, other):
     try:
       if isinstance(other, Color):
-        return (self.__rgb==other.__rgb) and (self.__a==other.__a)
+        return (self.__rgb==other.__rgb) and (self.__a==other.__a) and (self.__wref==other.__wref)
       if len(other) != 4:
         return False
       return list(self.__rgb + (self.__a,)) == list(other)
@@ -1430,89 +1439,183 @@ class Color:
   def __len__(self):
     return 4
 
-  def __get_is_legal(self):
+  # --============--------------------------------------------------------------
+  # -- Properties --
+  # --============--
+
+  @property
+  def is_legal(self):
+    """Boolean indicating whether the color is within the legal gamut."""
     return all(0.0 <= v <= 1.0 for v in self)
-  is_legal = property(fget=__get_is_legal, doc="Boolean indicating whether the color is within the legal gamut.")
 
-  def __get_nearest_legal(self):
-    def clamp(x, lo, hi):
-      if x < lo:
-        return lo
-      elif x > hi:
-        return hi
-      else:
-        return x
-    return Color.FromRgb(*[clamp(v, 0.0, 1.0) for v in self])
-  nearest_legal = property(fget=__get_nearest_legal, doc="The nearest legal color.")
-
-  def __get_alpha(self):
+  @property
+  def alpha(self):
+    """The transparency of this color. 0.0 is transparent and 1.0 is fully opaque."""
     return self.__a
-  alpha = property(fget=__get_alpha, doc='The transparency of this color. 0.0 is transparent and 1.0 is fully opaque.')
+  @alpha.setter
+  def alpha(self, value):
+    self.__a = value
 
-  def __get_white_ref(self):
+  @property
+  def white_ref(self):
+    """the white reference point of this color."""
     return self.__wref
-  white_ref = property(fget=__get_white_ref, doc='the white reference point of this color.')
+  @white_ref.setter
+  def white_ref(self, value):
+    self.__wref = value
 
-  def __get_rgb(self):
+
+  @property
+  def rgb(self):
+    """The RGB values of this Color."""
     return self.__rgb
-  rgb = property(fget=__get_rgb, doc='The RGB values of this Color.')
+  @rgb.setter
+  def rgb(self, value):
+    self.__rgb = tuple([float(v) for v in values])
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_hue(self):
-    return self.__hsl[0]
-  hue = property(fget=__get_hue, doc='The hue of this color.')
+  @property
+  def red(self):
+    return self.__rgb[0]
+  @red.setter
+  def red(self, value):
+    self.__rgb[0] = float(value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_hsl(self):
+  @property
+  def green(self):
+    return self.__rgb[1]
+  @green.setter
+  def green(self, value):
+    self.__rgb[1] = float(value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
+
+  @property
+  def blue(self):
+    return self.__rgb[2]
+  @blue.setter
+  def blue(self, value):
+    self.__rgb[2] = float(value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
+
+
+  @property
+  def hsl(self):
+    """The HSL values of this Color."""
     return self.__hsl
-  hsl = property(fget=__get_hsl, doc='The HSL values of this Color.')
+  @hsl.setter
+  def hsl(self, value):
+    self.__hsl = tuple([float(v) for v in values])
+    self.__rgb = hsl_to_rgb(*self.__hsl)
 
-  def __get_hsv(self):
-    h, s, v = rgb_to_hsv(*self.__rgb)
-    return (self.__hsl[0], s, v)
-  hsv = property(fget=__get_hsv, doc='The HSV values of this Color.')
+  @property
+  def hsl_hue(self):
+    """The hue of this color."""
+    return self.__hsl[0]
+  @hsl_hue.setter
+  def hsl_hue(self, value):
+    self.__hsl[0] = float(value)
+    self.__rgb = hsl_to_rgb(*self.__hsl)
 
-  def __get_yiq(self):
+  @property
+  def hsv(self):
+    """The HSV values of this Color."""
+    return rgb_to_hsv(*self.__rgb)
+  @hsv.setter
+  def hsv(self, value):
+    self.__rgb = hsv_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
+
+  @property
+  def yiq(self):
+    """The YIQ values of this Color."""
     return rgb_to_yiq(*self.__rgb)
-  yiq = property(fget=__get_yiq, doc='The YIQ values of this Color.')
+  @yiq.setter
+  def yiq(self, value):
+    self.__rgb = yiq_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_yuv(self):
+  @property
+  def yuv(self):
+    """The YUV values of this Color."""
     return rgb_to_yuv(*self.__rgb)
-  yuv = property(fget=__get_yuv, doc='The YUV values of this Color.')
+  @yuv.setter
+  def yuv(self, value):
+    self.__rgb = yuv_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_xyz(self):
+  @property
+  def xyz(self):
+    """The CIE-XYZ values of this Color."""
     return rgb_to_xyz(*self.__rgb)
-  xyz = property(fget=__get_xyz, doc='The CIE-XYZ values of this Color.')
+  @xyz.setter
+  def xyz(self, value):
+    self.__rgb = xyz_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_lab(self):
+  @property
+  def lab(self):
+    """The CIE-LAB values of this Color."""
     return xyz_to_lab(wref=self.__wref, *rgb_to_xyz(*self.__rgb))
-  lab = property(fget=__get_lab, doc='The CIE-LAB values of this Color.')
+  @lab.setter
+  def lab(self, value):
+    self.__rgb = xyz_to_rgb(lab_to_xyz(*value))
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_cmy(self):
+  @property
+  def cmy(self):
+    """The CMY values of this Color."""
     return rgb_to_cmy(*self.__rgb)
-  cmy = property(fget=__get_cmy, doc='The CMY values of this Color.')
+  @cmy.setter
+  def cmy(self, value):
+    self.__rgb = cmy_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_cmyk(self):
+  @property
+  def cmyk(self):
+    """The CMYK values of this Color."""
     return cmy_to_cmyk(*rgb_to_cmy(*self.__rgb))
-  cmyk = property(fget=__get_cmyk, doc='The CMYK values of this Color.')
+  @cmyk.setter
+  def cmyk(self, value):
+    self.__rgb = cmy_to_rgb(cmyk_to_cmy(*value))
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_int_tuple(self):
-    return rgb_to_int_tuple(*self.__rgb)
-  int_tuple = property(fget=__get_int_tuple, doc='This Color as a tuple of integers in the range [0...255]')
+  @property
+  def ints(self):
+    """This Color as a tuple of integers in the range [0...255]"""
+    return rgb_to_ints(*self.__rgb)
+  @ints.setter
+  def ints(self, value):
+    self.__rgb = ints_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_html(self):
+  @property
+  def html(self):
+    """This Color as an HTML color definition."""
     return rgb_to_html(*self.__rgb)
-  html = property(fget=__get_html, doc='This Color as an HTML color definition.')
+  @html.setter
+  def html(self, value):
+    self.__rgb = html_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_pil(self):
+  @property
+  def pil(self):
+    """This Color as a PIL compatible value."""
     return rgb_to_pil(*self.__rgb)
-  pil = property(fget=__get_pil, doc='This Color as a PIL compatible value.')
+  @property
+  def pil(self):
+    self.__rgb = pil_to_rgb(*value)
+    self.__hsl = rgb_to_hsl(*self.__rgb)
 
-  def __get_web_safe(self):
+  @property
+  def web_safe(self):
+    """The web safe color nearest to this one (RGB)."""
     return rgb_to_web_safe(*self.__rgb)
-  web_safe = property(fget=__get_web_safe, doc='The web safe color nearest to this one (RGB).')
 
-  def __get_greyscale(self):
+  @property
+  def greyscale(self):
+    """The greyscale equivalent to this color (RGB)."""
     return rgb_to_greyscale(*self.rgb)
-  greyscale = property(fget=__get_greyscale, doc='The greyscale equivalent to this color (RGB).')
 
   def with_alpha(self, alpha):
     """Create a new instance based on this one with a new alpha value.
@@ -1564,7 +1667,7 @@ class Color:
 
     """
     if labAsRef:
-      l, a, b = self.__get_lab()
+      l, a, b = self.lab
       return Color.FromLab(l, a, b, self.__a, wref)
     else:
       return Color(self.__rgb, 'rgb', self.__a, wref)
@@ -1582,7 +1685,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).with_hue(60)
     Color(1.0, 1.0, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).with_hue(60).hsl
-    (60, 1, 0.5)
+    (60.0, 1.0, 0.5)
 
     """
     h, s, l = self.__hsl
@@ -1605,7 +1708,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).with_saturation(0.5)
     Color(0.75, 0.5, 0.25, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).with_saturation(0.5).hsl
-    (30, 0.5, 0.5)
+    (30.0, 0.5, 0.5)
 
     """
     h, s, l = self.__hsl
@@ -1624,7 +1727,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).with_lightness(0.25)
     Color(0.5, 0.25, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).with_lightness(0.25).hsl
-    (30, 1, 0.25)
+    (30.0, 1.0, 0.25)
 
     """
     h, s, l = self.__hsl
@@ -1644,7 +1747,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).darker(0.25)
     Color(0.5, 0.25, 0.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).darker(0.25).hsl
-    (30, 1, 0.25)
+    (30.0, 1.0, 0.25)
 
     """
     h, s, l = self.__hsl
@@ -1664,7 +1767,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).lighter(0.25)
     Color(1.0, 0.75, 0.5, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).lighter(0.25).hsl
-    (30, 1, 0.75)
+    (30.0, 1.0, 0.75)
 
     """
     h, s, l = self.__hsl
@@ -1684,7 +1787,7 @@ class Color:
     >>> Color.FromHsl(30, 0.5, 0.5).saturate(0.25)
     Color(0.875, 0.5, 0.125, 1.0)
     >>> Color.FromHsl(30, 0.5, 0.5).saturate(0.25).hsl
-    (30, 0.75, 0.5)
+    (30.0, 0.75, 0.5)
 
     """
     h, s, l = self.__hsl
@@ -1704,11 +1807,19 @@ class Color:
     >>> Color.FromHsl(30, 0.5, 0.5).desaturate(0.25)
     Color(0.625, 0.5, 0.375, 1.0)
     >>> Color.FromHsl(30, 0.5, 0.5).desaturate(0.25).hsl
-    (30, 0.25, 0.5)
+    (30.0, 0.25, 0.5)
 
     """
     h, s, l = self.__hsl
     return Color((h, max(s - level, 0), l), 'hsl', self.__a, self.__wref)
+
+  def nearest_legal(self):
+    """Create a new instance that is the nearest legal color to this one.
+
+    >>> Color.FromRgb(2.0, 0.0, 3.0).nearest_legal()
+    Color(1.0, 0.0, 1.0, 1.0)
+    """
+    return Color.FromRgb(*[max(min(v, 1.0), 0.0) for v in self])
 
   def web_safe_dither(self):
     """Return the two websafe colors nearest to this one.
@@ -1719,10 +1830,10 @@ class Color:
 
     >>> c = Color.FromRgb(1.0, 0.45, 0.0)
     >>> c1, c2 = c.web_safe_dither()
-    >>> str(c1)
-    '(1, 0.4, 0, 1)'
-    >>> str(c2)
-    '(1, 0.6, 0, 1)'
+    >>> c1
+    Color(1.0, 0.4, 0.0, 1.0)
+    >>> c2
+    Color(1.0, 0.6, 0.0, 1.0)
 
     """
     return (
@@ -1743,7 +1854,7 @@ class Color:
     >>> Color.FromHsl(30, 1, 0.5).complementary_color(mode='rgb')
     Color(0.0, 0.5, 1.0, 1.0)
     >>> Color.FromHsl(30, 1, 0.5).complementary_color(mode='rgb').hsl
-    (210, 1, 0.5)
+    (210.0, 1.0, 0.5)
 
     """
     h, s, l = self.__hsl
@@ -1843,15 +1954,15 @@ class Color:
 
     >>> c2, c3 = c1.make_triadic_scheme(mode='rgb')
     >>> c2.hsl
-    (150.0, 1, 0.5)
+    (150.0, 1.0, 0.5)
     >>> c3.hsl
-    (270.0, 1, 0.5)
+    (270.0, 1.0, 0.5)
 
     >>> c2, c3 = c1.make_triadic_scheme(angle=40, mode='rgb')
     >>> c2.hsl
-    (190.0, 1, 0.5)
+    (190.0, 1.0, 0.5)
     >>> c3.hsl
-    (230.0, 1, 0.5)
+    (230.0, 1.0, 0.5)
 
     """
     h, s, l = self.__hsl
@@ -1885,7 +1996,7 @@ class Color:
 
     >>> col = Color.FromHsl(30, 1, 0.5)
     >>> [c.hsl for c in col.make_tetradic_scheme(mode='rgb', angle=30)]
-    [(90, 1, 0.5), (210, 1, 0.5), (270, 1, 0.5)]
+    [(90.0, 1.0, 0.5), (210.0, 1.0, 0.5), (270.0, 1.0, 0.5)]
 
     """
     h, s, l = self.__hsl
@@ -1920,15 +2031,15 @@ class Color:
 
     >>> c2, c3 = c1.make_analogous_scheme(angle=60, mode='rgb')
     >>> c2.hsl
-    (330, 1, 0.5)
+    (330.0, 1.0, 0.5)
     >>> c3.hsl
-    (90, 1, 0.5)
+    (90.0, 1.0, 0.5)
 
     >>> c2, c3 = c1.make_analogous_scheme(angle=10, mode='rgb')
     >>> c2.hsl
-    (20, 1, 0.5)
+    (20.0, 1.0, 0.5)
     >>> c3.hsl
-    (40, 1, 0.5)
+    (40.0, 1.0, 0.5)
 
     """
     h, s, l = self.__hsl
