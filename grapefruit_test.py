@@ -30,44 +30,68 @@ def assert_items_almost_equal(first, second, places=3, msg=None, delta=None):
 class TestConversion():
   """Test the static color conversion methods."""
 
+  def test_rgb_to_hsl_tuple(self):
+    assert_items_almost_equal((30.0, 1.0, 0.5), grapefruit.rgb_to_hsl((1, 0.5, 0)))
   def test_rgb_to_hsl(self):
     assert_items_almost_equal((30.0, 1.0, 0.5), grapefruit.rgb_to_hsl(1, 0.5, 0))
     assert_items_almost_equal((20.0, 1.0, 0.625), grapefruit.rgb_to_hsl(1, 0.5, 0.25)) #ff8040
     assert_items_almost_equal((40.0, 1.0, 0.375), grapefruit.rgb_to_hsl(0.75, 0.5, 0)) #bf8000
 
+  def test_hsl_to_rgb_tuple(self):
+    assert_items_almost_equal((1, 0.5, 0), grapefruit.hsl_to_rgb(((30.0, 1.0, 0.5))))
   def test_hsl_to_rgb(self):
     assert_items_almost_equal((1, 0.5, 0), grapefruit.hsl_to_rgb(30.0, 1.0, 0.5))
     assert_items_almost_equal((1, 0.5, 0.25), grapefruit.hsl_to_rgb(20.0, 1.0, 0.625))
     assert_items_almost_equal((0.75, 0.5, 0), grapefruit.hsl_to_rgb(40.0, 1.0, 0.375))
 
+  def test_rgb_to_hsv_tuple(self):
+    assert_equal((30.0, 1.0, 1.0), grapefruit.rgb_to_hsv((1, 0.5, 0)))
   def test_rgb_to_hsv(self):
     assert_equal((30.0, 1.0, 1.0), grapefruit.rgb_to_hsv(1, 0.5, 0))
     assert_equal((1, 0.5, 0), grapefruit.hsv_to_rgb(30.0, 1.0, 1.0))
 
+  def test_rgb_to_yiq_tuple(self):
+    assert_items_almost_equal((0.5923, 0.4589, -0.05), grapefruit.rgb_to_yiq((1, 0.5, 0)))
   def test_rgb_to_yiq(self):
     assert_items_almost_equal((0.5923, 0.4589, -0.05), grapefruit.rgb_to_yiq(1, 0.5, 0))
     assert_items_almost_equal((1, 0.5, 0), grapefruit.yiq_to_rgb(0.5923, 0.4589, -0.05))
 
+  def test_rgb_to_yuv_tuple(self):
+    assert_items_almost_equal((0.5925, -0.2916, 0.3575), grapefruit.rgb_to_yuv((1, 0.5, 0)))
   def test_rgb_to_yuv(self):
     assert_items_almost_equal((0.5925, -0.2916, 0.3575), grapefruit.rgb_to_yuv(1, 0.5, 0))
     assert_items_almost_equal((1, 0.5, 0), grapefruit.yuv_to_rgb(0.5925, -0.2916, 0.3575))
 
+  def test_rgb_to_xyz_tuple(self):
+    assert_items_almost_equal((0.4890, 0.3657, 0.04485), grapefruit.rgb_to_xyz((1, 0.5, 0)))
   def test_rgb_to_xyz(self):
     assert_items_almost_equal((0.4890, 0.3657, 0.04485), grapefruit.rgb_to_xyz(1, 0.5, 0))
     assert_items_almost_equal((1, 0.5, 0), grapefruit.xyz_to_rgb(0.488941, 0.365682, 0.0448137))
 
+  def test_xyz_tolab_tuple(self):
+    assert_items_almost_equal((66.9518, 0.4308, 0.7397), grapefruit.xyz_to_lab((0.488941, 0.365682, 0.0448137)))
   def test_xyz_tolab(self):
     assert_items_almost_equal((66.9518, 0.4308, 0.7397), grapefruit.xyz_to_lab(0.488941, 0.365682, 0.0448137))
     assert_items_almost_equal((66.9518, 0.4117, 0.6728), grapefruit.xyz_to_lab(0.488941, 0.365682, 0.0448137, grapefruit.WHITE_REFERENCE["std_D50"]))
 
+  def test_xyz_to_lab_tuple(self):
+    assert_items_almost_equal((0.4890, 0.3657, 0.0449), grapefruit.lab_to_xyz((66.9518, 0.4308, 0.7397)))
   def test_xyz_to_lab(self):
     assert_items_almost_equal((0.4890, 0.3657, 0.0449), grapefruit.lab_to_xyz(66.9518, 0.4308, 0.7397))
     assert_items_almost_equal((0.4890, 0.3657, 0.0449), grapefruit.lab_to_xyz(66.9518, 0.4117, 0.6728, grapefruit.WHITE_REFERENCE["std_D50"]))
 
-  def test_cmyk_to_cmy(self):
+  def test_cmy_to_cmyk_tuple(self):
+    assert_items_almost_equal((1, 0.32, 0, 0.5), grapefruit.cmy_to_cmyk((1.0, 0.66, 0.5)))
+  def test_cmy_to_cmyk(self):
     assert_items_almost_equal((1, 0.32, 0, 0.5), grapefruit.cmy_to_cmyk(1.0, 0.66, 0.5))
+
+  def test_cmyk_to_cmy_tuple(self):
+    assert_items_almost_equal((1.0, 0.66, 0.5), grapefruit.cmyk_to_cmy((1, 0.32, 0, 0.5)))
+  def test_cmyk_to_cmy(self):
     assert_items_almost_equal((1.0, 0.66, 0.5), grapefruit.cmyk_to_cmy(1, 0.32, 0, 0.5))
 
+  def test_rgb_to_cmy_tuple(self):
+    assert_equal((0, 0.5, 1), grapefruit.rgb_to_cmy((1, 0.5, 0)))
   def test_rgb_to_cmy(self):
     assert_equal((0, 0.5, 1), grapefruit.rgb_to_cmy(1, 0.5, 0))
     assert_equal((1, 0.5, 0), grapefruit.cmy_to_rgb(0, 0.5, 1))
@@ -80,6 +104,8 @@ class TestConversion():
     assert_items_almost_equal((1.0, 0.4, 0.0), grapefruit.html_to_rgb("f60"))
     assert_items_almost_equal((1.000000, 0.980392, 0.803922), grapefruit.html_to_rgb("lemonchiffon"))
 
+  def test_rgb_to_pil_tuple(self):
+    assert_almost_equal(0x0080ff, grapefruit.rgb_to_pil((1, 0.5, 0)))
   def test_rgb_to_pil(self):
     assert_almost_equal(0x0080ff, grapefruit.rgb_to_pil(1, 0.5, 0))
     assert_items_almost_equal((1.0, 0.5020, 0), grapefruit.pil_to_rgb(0x0080ff))
@@ -92,11 +118,15 @@ class TestConversion():
     assert_equal(0.2, grapefruit._websafe_component(0.2, True))
     assert_equal(0.2, grapefruit._websafe_component(0.3, True))
 
+  def test_rgb_to_to_websafe_tuple(self):
+    assert_equal((1.0, 0.6, 0.0), grapefruit.rgb_to_websafe((1, 0.55, 0.0)))
   def test_rgb_to_to_websafe(self):
     assert_equal((1.0, 0.6, 0.0), grapefruit.rgb_to_websafe(1, 0.55, 0.0))
     assert_equal((1.0, 0.4, 0.0), grapefruit.rgb_to_websafe(1, 0.55, 0.0, True))
     assert_equal((1.0, 0.4, 0.0), grapefruit.rgb_to_websafe(1, 0.5, 0.0, True))
 
+  def test_rgb_to_greyscale_tuple(self):
+    assert_equal((0.6, 0.6, 0.6), grapefruit.rgb_to_greyscale((1, 0.8, 0)))
   def test_rgb_to_greyscale(self):
     assert_equal((0.6, 0.6, 0.6), grapefruit.rgb_to_greyscale(1, 0.8, 0))
 
