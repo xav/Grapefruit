@@ -1602,8 +1602,8 @@ class Color(object):
   def pil(self):
     """This Color as a PIL compatible value."""
     return rgb_to_pil(*self.__rgb)
-  @property
-  def pil(self):
+  @pil.setter
+  def pil(self, value):
     self.__rgb = pil_to_rgb(*value)
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
