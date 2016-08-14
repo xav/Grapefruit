@@ -898,7 +898,7 @@ def pil_to_rgb(pil):
   b = 0xff & (pil >> 16)
   return tuple((v / 255.0 for v in (r, g, b)))
 
-def _web_safe_component(c, alt=False):
+def _websafe_component(c, alt=False):
   """Convert a color component to its web safe equivalent.
 
   Parameters:
@@ -932,7 +932,7 @@ def _web_safe_component(c, alt=False):
     if (sc-l) >= (u-sc): return u/100.0
     else: return l/100.0
 
-def rgb_to_web_safe(r, g, b, alt=False):
+def rgb_to_websafe(r, g, b, alt=False):
   """Convert the color from RGB to 'web safe' RGB
 
   Parameters:
@@ -953,12 +953,12 @@ def rgb_to_web_safe(r, g, b, alt=False):
     g[0...1],
     b[0...1]
 
-  >>> '(%g, %g, %g)' % rgb_to_web_safe(1, 0.55, 0.0)
+  >>> '(%g, %g, %g)' % rgb_to_websafe(1, 0.55, 0.0)
   '(1, 0.6, 0)'
 
   """
-  web_safeComponent = _web_safe_component
-  return tuple((web_safeComponent(v, alt) for v in (r, g, b)))
+  websafeComponent = _websafe_component
+  return tuple((websafeComponent(v, alt) for v in (r, g, b)))
 
 def rgb_to_greyscale(r, g, b):
   """Convert the color from RGB to its greyscale equivalent
@@ -1608,9 +1608,9 @@ class Color(object):
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
-  def web_safe(self):
+  def websafe(self):
     """The web safe color nearest to this one (RGB)."""
-    return rgb_to_web_safe(*self.__rgb)
+    return rgb_to_websafe(*self.__rgb)
 
   @property
   def greyscale(self):
@@ -1821,7 +1821,7 @@ class Color(object):
     """
     return Color.from_rgb(*[max(min(v, 1.0), 0.0) for v in self])
 
-  def web_safe_dither(self):
+  def websafe_dither(self):
     """Return the two websafe colors nearest to this one.
 
     Returns:
@@ -1829,7 +1829,7 @@ class Color(object):
       web safe colors closest this one.
 
     >>> c = Color.from_rgb(1.0, 0.45, 0.0)
-    >>> c1, c2 = c.web_safe_dither()
+    >>> c1, c2 = c.websafe_dither()
     >>> c1
     Color(1.0, 0.4, 0.0, 1.0)
     >>> c2
@@ -1837,8 +1837,8 @@ class Color(object):
 
     """
     return (
-      Color(rgb_to_web_safe(*self.__rgb), 'rgb', self.__a, self.__wref),
-      Color(rgb_to_web_safe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
+      Color(rgb_to_websafe(*self.__rgb), 'rgb', self.__a, self.__wref),
+      Color(rgb_to_websafe(alt=True, *self.__rgb), 'rgb', self.__a, self.__wref))
 
   def complementary_color(self, mode='ryb'):
     """Create a new instance which is the complementary color of this one.
