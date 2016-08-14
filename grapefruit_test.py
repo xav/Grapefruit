@@ -218,7 +218,172 @@ class TestNewFrom():
     assert_items_almost_equal(c, (1, 0.5020, 0, 0.5))
 
 
-class TestColor():
+class TestColorProperties():
+  def test_get_alpha(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.alpha, 1.0)
+  def test_set_alpha(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.alpha = 0.5
+    assert_equal(col.alpha, 0.5)
+
+  def test_get_white_ref(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.white_ref, grapefruit.WHITE_REFERENCE['std_D65'])
+  def test_set_white_ref(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.white_ref = grapefruit.WHITE_REFERENCE['std_A']
+    assert_equal((1.09847, 1.00000, 0.35582), col.white_ref)
+
+  def test_get_rgb(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.rgb, (1, 0.5, 0))
+  def test_set_rgb(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.rgb = (0.1, 0.2, 0.3)
+    assert_equal(col.rgb, (0.1, 0.2, 0.3))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.1, 0.2, 0.3))
+
+  def test_get_red(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    assert_equal(col.red, 0.1)
+  def test_set_red(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    col.red = 0.9
+    assert_equal(col.rgb, (0.9, 0.2, 0.3))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.9, 0.2, 0.3))
+
+  def test_get_green(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    assert_equal(col.green, 0.2)
+  def test_set_green(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    col.green = 0.9
+    assert_equal(col.rgb, (0.1, 0.9, 0.3))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.1, 0.9, 0.3))
+
+  def test_get_blue(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    assert_equal(col.blue, 0.3)
+  def test_set_blue(self):
+    col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
+    col.blue = 0.9
+    assert_equal(col.rgb, (0.1, 0.2, 0.9))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.1, 0.2, 0.9))
+
+  def test_get_hsl(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.hsl, (30, 1, 0.5))
+  def test_set_hsl(self):
+    col = grapefruit.Color.from_hsl(30, 1, 0.5)
+    col.hsl = (40, 0.5, 0.7)
+    assert_equal(col.hsl, (40, 0.5, 0.7))
+    assert_equal(col.rgb, grapefruit.hsl_to_rgb(40, 0.5, 0.7))
+
+  def test_get_hsl_hue(self):
+    col = grapefruit.Color.from_hsl(30, 1, 0.5)
+    assert_equal(col.hsl_hue, 30)
+  def test_set_hsl_hue(self):
+    col = grapefruit.Color.from_hsl(30, 1, 0.5)
+    col.hsl_hue = 40
+    assert_equal(col.hsl, (40, 1, 0.5))
+    assert_equal(col.rgb, grapefruit.hsl_to_rgb(40, 1, 0.5))
+
+  def test_get_hsv(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.hsv, (30, 1, 1))
+  def test_set_hsv(self):
+    col = grapefruit.Color.from_hsv(30, 1, 1)
+    col.hsv = (40, 0.5, 0.2)
+    assert_items_almost_equal(col.hsv, (40, 0.5, 0.2))
+    assert_equal(col.rgb, grapefruit.hsv_to_rgb(40, 0.5, 0.2))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.hsv_to_rgb(40, 0.5, 0.2)))
+
+  def test_get_yiq(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_items_almost_equal(col.yiq, (0.5923, 0.4589, -0.05))
+  def test_set_yiq(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.yiq = (0.1, 0.2, 0.3)
+    assert_items_almost_equal(col.yiq, (0.1, 0.2, 0.3))
+    assert_equal(col.rgb, grapefruit.yiq_to_rgb(0.1, 0.2, 0.3))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.yiq_to_rgb(0.1, 0.2, 0.3)))
+
+  def test_get_yuv(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_items_almost_equal(col.yuv, (0.5925, -0.2916, 0.3575))
+  def test_set_yuv(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.yuv = (0.1, 0.2, 0.3)
+    assert_items_almost_equal(col.yuv, (0.1, 0.2, 0.3))
+    assert_equal(col.rgb, grapefruit.yuv_to_rgb(0.1, 0.2, 0.3))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.yuv_to_rgb(0.1, 0.2, 0.3)))
+
+  def test_get_xyz(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_items_almost_equal(col.xyz, (0.4890, 0.3657, 0.04485))
+  def test_set_xyz(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.xyz = (0.1, 0.2, 0.3)
+    assert_items_almost_equal(col.xyz, (0.1, 0.2, 0.3))
+    assert_equal(col.rgb, grapefruit.xyz_to_rgb(0.1, 0.2, 0.3))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.xyz_to_rgb(0.1, 0.2, 0.3)))
+
+  def test_get_lab(self):
+    c = grapefruit.Color.from_rgb(1, 0.5, 0, wref=grapefruit.WHITE_REFERENCE['std_D50'])
+    assert_items_almost_equal(c.lab, (66.9518, 0.4117, 0.6728))
+
+  def test_get_cmy(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.cmy, (0, 0.5, 1))
+  def test_set_cmy(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.cmy = (0.1, 0.2, 0.3)
+    assert_items_almost_equal(col.cmy, (0.1, 0.2, 0.3))
+    assert_equal(col.rgb, grapefruit.cmy_to_rgb(0.1, 0.2, 0.3))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.cmy_to_rgb(0.1, 0.2, 0.3)))
+
+  def test_get_cmyk(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.cmyk, (0, 0.5, 1, 0))
+
+  def test_get_ints(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.ints, (255, 128, 0))
+  def test_set_ints(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.ints = (0, 128, 255)
+    assert_equal(col.rgb, (0.0, 128.0/255.0, 1.0))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.0, 128.0/255.0, 1.0))
+
+  def test_get_html(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.html, '#ff8000')
+  def test_set_html(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.html = '#0080ff'
+    assert_equal(col.rgb, (0.0, 128.0/255.0, 1.0))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.0, 128.0/255.0, 1.0))
+
+  def test_get_pil(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.pil, 0x0080ff)
+  def test_set_pil(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.pil = 0xff8000
+    assert_equal(col.rgb, (0.0, 128.0/255.0, 1.0))
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.0, 128.0/255.0, 1.0))
+
+  def test_get_websafe(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.websafe, (1, 0.6, 0))
+
+  def test_get_greyscale(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.greyscale, (0.5, 0.5, 0.5))
+
+
+class TestColorMethods():
   @classmethod
   def setup_class(self):
     self.rgb_col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
@@ -249,28 +414,6 @@ class TestColor():
 
   def test_Iter(self):
     assert_equal([1, 0.5, 0, 1], list(iter(self.rgb_col)))
-
-  def test_Properties(self):
-    assert_equal(self.rgb_col.alpha, 1.0)
-    assert_equal(self.rgb_col.white_ref, grapefruit.WHITE_REFERENCE['std_D65'])
-    assert_equal(self.rgb_col.rgb, (1, 0.5, 0))
-    assert_equal(self.hsl_col.hsl_hue, 30)
-    assert_equal(self.rgb_col.hsl, (30, 1, 0.5))
-    assert_equal(self.rgb_col.hsv, (30, 1, 1))
-    assert_items_almost_equal(self.rgb_col.yiq, (0.5923, 0.4589, -0.05))
-    assert_items_almost_equal(self.rgb_col.yuv, (0.5925, -0.2916, 0.3575))
-    assert_items_almost_equal(self.rgb_col.xyz, (0.4890, 0.3657, 0.04485))
-    assert_items_almost_equal(self.rgb_col.lab, (66.9518, 0.4308, 0.7397))
-    assert_equal(self.rgb_col.cmy, (0, 0.5, 1))
-    assert_equal(self.rgb_col.cmyk, (0, 0.5, 1, 0))
-    assert_equal(self.rgb_col.ints, (255, 128, 0))
-    assert_equal(self.rgb_col.html, '#ff8000')
-    assert_equal(self.rgb_col.pil, 0x0080ff)
-    assert_equal(self.rgb_col.websafe, (1, 0.6, 0))
-    assert_equal(self.rgb_col.greyscale, (0.5, 0.5, 0.5))
-
-    c = grapefruit.Color.from_rgb(1, 0.5, 0, wref=grapefruit.WHITE_REFERENCE['std_D50'])
-    assert_items_almost_equal(c.lab, (66.9518, 0.4117, 0.6728))
 
   def test_with_alpha(self):
     assert_equal(self.rgb_col.with_alpha(0.5), (1, 0.5, 0, 0.5))
