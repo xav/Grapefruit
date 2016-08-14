@@ -241,7 +241,7 @@ NAMED_COLOR = {
   'yellow':               '#ffff00',
   'yellowgreen':          '#9acd32'}
 
-def rgb_to_hsl(r, g, b):
+def rgb_to_hsl(r, g=None, b=None):
   """Convert the color from RGB coordinates to HSL.
 
   Parameters:
@@ -262,6 +262,9 @@ def rgb_to_hsl(r, g, b):
   (30.0, 1.0, 0.5)
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
+
   minVal = min(r, g, b)       # min RGB value
   maxVal = max(r, g, b)       # max RGB value
 
@@ -286,14 +289,17 @@ def rgb_to_hsl(r, g, b):
   h = (h*60.0) % 360.0
   return (h, s, l)
 
-def _hue_to_rgb(n1, n2, h):
+def _hue_to_rgb(n1, n2=None, h=None):
+  if type(n1) in [list,tuple]:
+    n1, n2, h = n1
+
   h %= 6.0
   if h < 1.0: return n1 + ((n2-n1) * h)
   if h < 3.0: return n2
   if h < 4.0: return n1 + ((n2-n1) * (4.0 - h))
   return n1
 
-def hsl_to_rgb(h, s, l):
+def hsl_to_rgb(h, s=None, l=None):
   """Convert the color from HSL coordinates to RGB.
 
   Parameters:
@@ -314,6 +320,9 @@ def hsl_to_rgb(h, s, l):
   (1.0, 0.5, 0.0)
 
   """
+  if type(h) in [list,tuple]:
+    h, s, l = h
+
   if s==0: return (l, l, l)   # achromatic (gray)
 
   if l<0.5: n2 = l * (1.0 + s)
@@ -329,7 +338,7 @@ def hsl_to_rgb(h, s, l):
 
   return (r, g, b)
 
-def rgb_to_hsv(r, g, b):
+def rgb_to_hsv(r, g=None, b=None):
   """Convert the color from RGB coordinates to HSV.
 
   Parameters:
@@ -350,6 +359,9 @@ def rgb_to_hsv(r, g, b):
   (30.0, 1.0, 1.0)
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
+
   v = float(max(r, g, b))
   d = v - min(r, g, b)
   if d==0: return (0.0, 0.0, v)
@@ -367,7 +379,7 @@ def rgb_to_hsv(r, g, b):
   h = (h*60.0) % 360.0
   return (h, s, v)
 
-def hsv_to_rgb(h, s, v):
+def hsv_to_rgb(h, s=None, v=None):
   """Convert the color from RGB coordinates to HSV.
 
   Parameters:
@@ -388,6 +400,9 @@ def hsv_to_rgb(h, s, v):
   (0.5, 0.25, 0.0)
 
   """
+  if type(h) in [list,tuple]:
+    h, s, v = h
+
   if s==0: return (v, v, v)   # achromatic (gray)
 
   h /= 60.0
@@ -407,7 +422,7 @@ def hsv_to_rgb(h, s, v):
   if i==4: return (n, m, v)
   return (v, m, n)
 
-def rgb_to_yiq(r, g, b):
+def rgb_to_yiq(r, g=None, b=None):
   """Convert the color from RGB to YIQ.
 
   Parameters:
@@ -428,12 +443,15 @@ def rgb_to_yiq(r, g, b):
   '(0.592263, 0.458874, -0.0499818)'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
+
   y = (r * 0.29895808) + (g * 0.58660979) + (b *0.11443213)
   i = (r * 0.59590296) - (g * 0.27405705) - (b *0.32184591)
   q = (r * 0.21133576) - (g * 0.52263517) + (b *0.31129940)
   return (y, i, q)
 
-def yiq_to_rgb(y, i, q):
+def yiq_to_rgb(y, i=None, q=None):
   """Convert the color from YIQ coordinates to RGB.
 
   Parameters:
@@ -454,12 +472,14 @@ def yiq_to_rgb(y, i, q):
   '(1.0, 0.5, 1e-06)'
 
   """
+  if type(y) in [list,tuple]:
+    y, i, q = y
   r = y + (i * 0.9562) + (q * 0.6210)
   g = y - (i * 0.2717) - (q * 0.6485)
   b = y - (i * 1.1053) + (q * 1.7020)
   return (r, g, b)
 
-def rgb_to_yuv(r, g, b):
+def rgb_to_yuv(r, g=None, b=None):
   """Convert the color from RGB coordinates to YUV.
 
   Parameters:
@@ -480,12 +500,15 @@ def rgb_to_yuv(r, g, b):
   '(0.5925, -0.29156, 0.357505)'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
+
   y =  (r * 0.29900) + (g * 0.58700) + (b * 0.11400)
   u = -(r * 0.14713) - (g * 0.28886) + (b * 0.43600)
   v =  (r * 0.61500) - (g * 0.51499) - (b * 0.10001)
   return (y, u, v)
 
-def yuv_to_rgb(y, u, v):
+def yuv_to_rgb(y, u=None, v=None):
   """Convert the color from YUV coordinates to RGB.
 
   Parameters:
@@ -506,12 +529,14 @@ def yuv_to_rgb(y, u, v):
   '(0.999989, 0.500015, -6.3276e-05)'
 
   """
+  if type(y) in [list,tuple]:
+    y, u, v = y
   r = y + (v * 1.13983)
   g = y - (u * 0.39465) - (v * 0.58060)
   b = y + (u * 2.03211)
   return (r, g, b)
 
-def rgb_to_xyz(r, g, b):
+def rgb_to_xyz(r, g=None, b=None):
   """Convert the color from sRGB to CIE XYZ.
 
   The methods assumes that the RGB coordinates are given in the sRGB
@@ -539,6 +564,9 @@ def rgb_to_xyz(r, g, b):
   '(0.488941, 0.365682, 0.0448137)'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
+
   r, g, b = [((v <= 0.03928) and [v / 12.92] or [((v+0.055) / 1.055) **2.4])[0] for v in (r, g, b)]
 
   x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805)
@@ -546,7 +574,7 @@ def rgb_to_xyz(r, g, b):
   z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505)
   return (x, y, z)
 
-def xyz_to_rgb(x, y, z):
+def xyz_to_rgb(x, y=None, z=None):
   """Convert the color from CIE XYZ coordinates to sRGB.
 
   .. note::
@@ -571,12 +599,14 @@ def xyz_to_rgb(x, y, z):
   '(1, 0.5, 6.81883e-08)'
 
   """
+  if type(x) in [list,tuple]:
+    x, y, z = x
   r =  (x * 3.2406255) - (y * 1.5372080) - (z * 0.4986286)
   g = -(x * 0.9689307) + (y * 1.8757561) + (z * 0.0415175)
   b =  (x * 0.0557101) - (y * 0.2040211) + (z * 1.0569959)
   return tuple((((v <= _srgbGammaCorrInv) and [v * 12.92] or [(1.055 * (v ** (1/2.4))) - 0.055])[0] for v in (r, g, b)))
 
-def xyz_to_lab(x, y, z, wref=_DEFAULT_WREF):
+def xyz_to_lab(x, y=None, z=None, wref=_DEFAULT_WREF):
   """Convert the color from CIE XYZ to CIE L*a*b*.
 
   Parameters:
@@ -602,6 +632,8 @@ def xyz_to_lab(x, y, z, wref=_DEFAULT_WREF):
   '(66.9518, 0.411663, 0.67282)'
 
   """
+  if type(x) in [list,tuple]:
+    x, y, z = x
   # White point correction
   x /= wref[0]
   y /= wref[1]
@@ -617,7 +649,7 @@ def xyz_to_lab(x, y, z, wref=_DEFAULT_WREF):
 
   return (l, a, b)
 
-def lab_to_xyz(l, a, b, wref=_DEFAULT_WREF):
+def lab_to_xyz(l, a=None, b=None, wref=_DEFAULT_WREF):
   """Convert the color from CIE L*a*b* to CIE 1931 XYZ.
 
   Parameters:
@@ -643,12 +675,14 @@ def lab_to_xyz(l, a, b, wref=_DEFAULT_WREF):
   '(0.488941, 0.365682, 0.0448138)'
 
   """
+  if type(l) in [list,tuple]:
+    l, a, b = l
   y = (l + 16) / 116
   x = (a / 5.0) + y
   z = y - (b / 2.0)
   return tuple((((v > 0.206893) and [v**3] or [(v - _sixteenHundredsixteenth) / 7.787])[0] * w for v, w in zip((x, y, z), wref)))
 
-def cmyk_to_cmy(c, m, y, k):
+def cmyk_to_cmy(c, m=None, y=None, k=None):
   """Convert the color from CMYK coordinates to CMY.
 
   Parameters:
@@ -671,10 +705,12 @@ def cmyk_to_cmy(c, m, y, k):
   '(1, 0.66, 0.5)'
 
   """
+  if type(c) in [list,tuple]:
+    c, m, y, k = c
   mk = 1-k
   return ((c*mk + k), (m*mk + k), (y*mk + k))
 
-def cmy_to_cmyk(c, m, y):
+def cmy_to_cmyk(c, m=None, y=None):
   """Convert the color from CMY coordinates to CMYK.
 
   Parameters:
@@ -696,12 +732,14 @@ def cmy_to_cmyk(c, m, y):
   '(1, 0.32, 0, 0.5)'
 
   """
+  if type(c) in [list,tuple]:
+    c, m, y = c
   k = min(c, m, y)
   if k==1.0: return (0.0, 0.0, 0.0, 1.0)
   mk = 1-k
   return ((c-k) / mk, (m-k) / mk, (y-k) / mk, k)
 
-def rgb_to_cmy(r, g, b):
+def rgb_to_cmy(r, g=None, b=None):
   """Convert the color from RGB coordinates to CMY.
 
   Parameters:
@@ -722,9 +760,11 @@ def rgb_to_cmy(r, g, b):
   (0, 0.5, 1)
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   return (1-r, 1-g, 1-b)
 
-def cmy_to_rgb(c, m, y):
+def cmy_to_rgb(c, m=None, y=None):
   """Convert the color from CMY coordinates to RGB.
 
   Parameters:
@@ -745,10 +785,12 @@ def cmy_to_rgb(c, m, y):
   (1, 0.5, 0)
 
   """
+  if type(c) in [list,tuple]:
+    c, m, y = c
   return (1-c, 1-m, 1-y)
 
-def rgb_to_ints(r, g, b):
-  """Convert the color from (r, g, b) to a tuple of ints.
+def rgb_to_ints(r, g=None, b=None):
+  """Convert the color in the standard [0...1] range to ints in the [0..255] range.
 
   Parameters:
     :r:
@@ -768,16 +810,20 @@ def rgb_to_ints(r, g, b):
   (255, 128, 0)
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   return tuple(int(round(v*255)) for v in (r, g, b))
 
-def ints_to_rgb(ints):
-  """Convert a tuple of ints to (r, g, b).
+def ints_to_rgb(r, g=None, b=None):
+  """Convert ints in the [0...255] range to the standard [0...1] range.
 
   Parameters:
-    The color as an (r, g, b) integer tuple in the range:
-    r[0...255],
-    g[0...255],
-    b[0...255]
+    :r:
+      The Red component value [0...255]
+    :g:
+      The Green component value [0...255]
+    :b:
+      The Blue component value [0...255]
 
   Returns:
     The color as an (r, g, b) tuple in the range:
@@ -789,9 +835,11 @@ def ints_to_rgb(ints):
   '(1, 0.501961, 0)'
 
   """
-  return tuple(v / 255 for v in ints)
+  if type(r) in [list,tuple]:
+    r, g, b = r
+  return tuple(v / 255 for v in [r, g, b])
 
-def rgb_to_html(r, g, b):
+def rgb_to_html(r, g=None, b=None):
   """Convert the color from (r, g, b) to #RRGGBB.
 
   Parameters:
@@ -809,6 +857,8 @@ def rgb_to_html(r, g, b):
   '#ff8000'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   return '#%02x%02x%02x' % tuple((min(round(v*255), 255) for v in (r, g, b)))
 
 def html_to_rgb(html):
@@ -856,7 +906,7 @@ def html_to_rgb(html):
 
   return tuple(((int(n, 16) / 255.0) for n in rgb))
 
-def rgb_to_pil(r, g, b):
+def rgb_to_pil(r, g=None, b=None):
   """Convert the color from RGB to a PIL-compatible integer.
 
   Parameters:
@@ -874,6 +924,8 @@ def rgb_to_pil(r, g, b):
   '0x0080ff'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   r, g, b = [min(int(round(v*255)), 255) for v in (r, g, b)]
   return (b << 16) + (g << 8) + r
 
@@ -932,7 +984,7 @@ def _websafe_component(c, alt=False):
     if (sc-l) >= (u-sc): return u/100.0
     else: return l/100.0
 
-def rgb_to_websafe(r, g, b, alt=False):
+def rgb_to_websafe(r, g=None, b=None, alt=False):
   """Convert the color from RGB to 'web safe' RGB
 
   Parameters:
@@ -957,10 +1009,12 @@ def rgb_to_websafe(r, g, b, alt=False):
   '(1, 0.6, 0)'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   websafeComponent = _websafe_component
   return tuple((websafeComponent(v, alt) for v in (r, g, b)))
 
-def rgb_to_greyscale(r, g, b):
+def rgb_to_greyscale(r, g=None, b=None):
   """Convert the color from RGB to its greyscale equivalent
 
   Parameters:
@@ -982,6 +1036,8 @@ def rgb_to_greyscale(r, g, b):
   '(0.6, 0.6, 0.6)'
 
   """
+  if type(r) in [list,tuple]:
+    r, g, b = r
   v = (r + g + b) / 3.0
   return (v, v, v)
 
@@ -1471,7 +1527,7 @@ class Color(object):
     return self.__rgb
   @rgb.setter
   def rgb(self, value):
-    self.__rgb = tuple([float(v) for v in values])
+    self.__rgb = tuple([float(v) for v in value])
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
@@ -1505,7 +1561,7 @@ class Color(object):
     return self.__hsl
   @hsl.setter
   def hsl(self, value):
-    self.__hsl = tuple([float(v) for v in values])
+    self.__hsl = tuple([float(v) for v in value])
     self.__rgb = hsl_to_rgb(*self.__hsl)
 
   @property
