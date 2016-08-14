@@ -736,7 +736,7 @@ def cmy_to_cmyk(c, m=None, y=None):
     c, m, y = c
   k = min(c, m, y)
   if k==1.0: return (0.0, 0.0, 0.0, 1.0)
-  mk = 1-k
+  mk = 1.0-k
   return ((c-k) / mk, (m-k) / mk, (y-k) / mk, k)
 
 def rgb_to_cmy(r, g=None, b=None):

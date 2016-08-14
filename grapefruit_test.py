@@ -346,6 +346,12 @@ class TestColorProperties():
   def test_get_cmyk(self):
     col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
     assert_equal(col.cmyk, (0, 0.5, 1, 0))
+  def test_set_cmyk(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.cmyk = (0, 0.111, 0.222, 0.46)
+    assert_items_almost_equal(col.cmyk, (0, 0.111, 0.222, 0.46))
+    assert_equal(col.rgb, grapefruit.cmy_to_rgb(grapefruit.cmyk_to_cmy(0, 0.111, 0.222, 0.46)))
+    assert_almost_equal(col.hsl, grapefruit.rgb_to_hsl(grapefruit.cmy_to_rgb(grapefruit.cmyk_to_cmy(0, 0.111, 0.222, 0.46))))
 
   def test_get_ints(self):
     col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
