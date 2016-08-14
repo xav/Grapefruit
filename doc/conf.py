@@ -10,8 +10,7 @@
 #
 # All configuration values have a default value; values that are commented out
 # serve to show the default value.
-# 
-# $Id$
+#
 
 import sys, os
 
@@ -38,15 +37,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = 'GrapeFruit'
-copyright = '2008, Xavier Basty <xbasty@gmail.com>'
+copyright = '2008-2016, Xavier Basty <xbasty@gmail.com>'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '0.1'
+version = '0.2'
 # The full version, including alpha/beta/rc tags.
-release = '0.1a3'
+release = '0.2a1'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

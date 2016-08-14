@@ -6,14 +6,16 @@ GrapeFruit
    :target: https://pypi.python.org/pypi/grapefruit/
    :alt: Latest PyPI version
 
-.. image:: https://img.shields.io/travis/xav/Grapefruit/master.svg
+.. image:: https://img.shields.io/travis/xav/Grapefruit/master.svg?style=flat
    :target: https://travis-ci.org/xav/grapefruit/
    :alt: Travis CI build status
 
-.. image:: https://coveralls.io/repos/github/xav/Grapefruit/badge.svg?branch=master
+.. image:: https://coveralls.io/repos/github/xav/Grapefruit/badge.svg?branch=master&style=flat
    :target: https://coveralls.io/github/xav/Grapefruit?branch=master
    :alt: Test coverage
 
+.. image:: https://img.shields.io/github/license/xav/Grapefruit.svg?style=flat
+   :alt: License
 
 GrapeFruit is a pure Python module that let you easily manipulate and convert color information.
 Its Primary goal is to be *natural* and *flexible*.
