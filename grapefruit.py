@@ -837,7 +837,7 @@ def ints_to_rgb(r, g=None, b=None):
   """
   if type(r) in [list,tuple]:
     r, g, b = r
-  return tuple(v / 255 for v in [r, g, b])
+  return tuple(float(v) / 255.0 for v in [r, g, b])
 
 def rgb_to_html(r, g=None, b=None):
   """Convert the color from (r, g, b) to #RRGGBB.
@@ -1535,7 +1535,7 @@ class Color(object):
     return self.__rgb[0]
   @red.setter
   def red(self, value):
-    self.__rgb[0] = float(value)
+    self.__rgb = (float(value), self.__rgb[1], self.__rgb[2])
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
@@ -1543,7 +1543,7 @@ class Color(object):
     return self.__rgb[1]
   @green.setter
   def green(self, value):
-    self.__rgb[1] = float(value)
+    self.__rgb = (self.__rgb[0], float(value), self.__rgb[2])
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
@@ -1551,7 +1551,7 @@ class Color(object):
     return self.__rgb[2]
   @blue.setter
   def blue(self, value):
-    self.__rgb[2] = float(value)
+    self.__rgb = (self.__rgb[0], self.__rgb[1], float(value))
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
 
@@ -1570,7 +1570,7 @@ class Color(object):
     return self.__hsl[0]
   @hsl_hue.setter
   def hsl_hue(self, value):
-    self.__hsl[0] = float(value)
+    self.__hsl = (float(value), self.__hsl[1], self.__hsl[2])
     self.__rgb = hsl_to_rgb(*self.__hsl)
 
   @property
@@ -1633,7 +1633,7 @@ class Color(object):
     return cmy_to_cmyk(*rgb_to_cmy(*self.__rgb))
   @cmyk.setter
   def cmyk(self, value):
-    self.__rgb = cmy_to_rgb(cmyk_to_cmy(*value))
+    self.__rgb = cmy_to_rgb(*cmyk_to_cmy(*value))
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
@@ -1651,7 +1651,7 @@ class Color(object):
     return rgb_to_html(*self.__rgb)
   @html.setter
   def html(self, value):
-    self.__rgb = html_to_rgb(*value)
+    self.__rgb = html_to_rgb(value)
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
@@ -1660,7 +1660,7 @@ class Color(object):
     return rgb_to_pil(*self.__rgb)
   @pil.setter
   def pil(self, value):
-    self.__rgb = pil_to_rgb(*value)
+    self.__rgb = pil_to_rgb(value)
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
