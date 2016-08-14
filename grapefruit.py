@@ -1531,6 +1531,16 @@ class Color(object):
     self.__hsl = rgb_to_hsl(*self.__rgb)
 
   @property
+  def rgba(self):
+    """The RGBA values of this Color."""
+    return (self.__rgb + (self.__a,))
+  @rgba.setter
+  def rgba(self, value):
+    self.__rgb = tuple([float(v) for v in value[:3]])
+    self.__a = float(value[3])
+    self.__hsl = rgb_to_hsl(*self.__rgb)
+
+  @property
   def red(self):
     return self.__rgb[0]
   @red.setter

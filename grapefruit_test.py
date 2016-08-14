@@ -244,6 +244,16 @@ class TestColorProperties():
     assert_equal(col.rgb, (0.1, 0.2, 0.3))
     assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.1, 0.2, 0.3))
 
+  def test_get_rgba(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    assert_equal(col.rgba, (1, 0.5, 0, 1))
+  def test_set_rgba(self):
+    col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
+    col.rgba = (0.1, 0.2, 0.3, 0.5)
+    assert_equal(col.rgb, (0.1, 0.2, 0.3))
+    assert_equal(col.alpha, 0.5)
+    assert_equal(col.hsl, grapefruit.rgb_to_hsl(0.1, 0.2, 0.3))
+
   def test_get_red(self):
     col = grapefruit.Color.from_rgb(0.1, 0.2, 0.3)
     assert_equal(col.red, 0.1)
