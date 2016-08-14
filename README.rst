@@ -31,7 +31,97 @@ The following color systems are supported by GrapeFruit:
   * CMY
   * CMYK
   * HTML/CSS color definition (#RRGGBB, #RGB or the X11 color name)
-  * RYB (artistic color wheel
+  * RYB (Itten's )rtistic color wheel
+
+
+Installation
+============
+
+You can install ``grapefruit`` driectly from PyPY. Just run::
+
+  pip install grapefruit
+
+And you're set.
+
+If you want to use the latest version, you can install directly from the sources
+by running::
+
+  pip install git+https://github.com/xav/Grapefruit
+
+You can also use a specific revision (branch/tag/commit)::
+
+  pip install git+https://github.com/xav/Grapefruit@master
+
+
+Usage
+=====
+
+To get complete demo of each function, please read the source code which is
+heavily documented and provide a lot of examples in doctest format.
+
+Here is a reduced sample of a common usage scenario:
+
+
+Conversion of raw color values
+------------------------------
+
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| ↓ from/to → | cmy | cmyk | greyscale | hsl | hsv | html | ints | lab | pil | rgb | ryb | web_safe | xyz | yiq | yuv |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| cmy         |     | yes  |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| cmyk        | yes |      |           |     |     |      |      |     |     |     |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| greyscale   |     |      |           |     |     |      |      |     |     |     |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| hsl         |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| hsv         |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| html        |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| ints        |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| lab         |     |      |           |     |     |      |      |     |     |     |     |          | yes |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| pil         |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| rgb         | yes |      | yes       | yes | yes | yes  | yes  |     | yes |     | yes | yes      |     | yes | yes |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| ryb         |     |      |           |     |     |      |      |     |     | yes |     |          | yes |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| websafe     |     |      |           |     |     |      |      |     |     |     |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| xyz         |     |      |           |     |     |      |      | yes |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| yiq         |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+| yuv         |     |      |           |     |     |      |      |     |     | yes |     |          |     |     |     |
++-------------+-----+------+-----------+-----+-----+------+------+-----+-----+-----+-----+----------+-----+-----+-----+
+
+
+Instantiation
+-------------
+
+
+Reading/Writing values
+----------------------
+
+
+Generate variations of a color
+------------------------------
+
+
+Generate color schemes based on a start color
+---------------------------------------------
+
+
+Contributing
+============
+
+Any suggestion or issue is welcome. Push request are very welcome,
+please check out the guidelines.
+
 
 
 License
@@ -39,7 +129,7 @@ License
 
 ::
 
-  Copyright (c) 2008, Xavier Basty
+  Copyright (c) 2008-2016, Xavier Basty
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
