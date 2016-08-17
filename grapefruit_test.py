@@ -233,7 +233,7 @@ class TestColorProperties():
   def test_set_white_ref(self):
     col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
     col.white_ref = grapefruit.WHITE_REFERENCE['std_A']
-    assert_equal((1.09847, 1.00000, 0.35582), col.white_ref)
+    assert_equal(grapefruit.WHITE_REFERENCE['std_A'], col.white_ref)
 
   def test_get_rgb(self):
     col = grapefruit.Color.from_rgb(1.0, 0.5, 0.0)
