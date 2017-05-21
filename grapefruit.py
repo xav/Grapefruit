@@ -17,7 +17,7 @@
 
 """GrapeFruit - Color manipulation in Python"""
 
-from __future__ import division
+
 
 import sys
 
@@ -1492,7 +1492,7 @@ class Color(object):
         The RGBA representation of this grapefruit.Color instance.
 
       """
-      return unicode("({}, {}, {}, {})".format(*[round(v, 6) for v in (self.__rgb + (self.__a,))]))
+      return str("({}, {}, {}, {})".format(*[round(v, 6) for v in (self.__rgb + (self.__a,))]))
 
   def __iter__(self):
     return iter(self.__rgb + (self.__a,))
