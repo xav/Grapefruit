@@ -1,0 +1,9 @@
+README.rst
+grapefruit.py
+setup.cfg
+setup.py
+grapefruit.egg-info/PKG-INFO
+grapefruit.egg-info/SOURCES.txt
+grapefruit.egg-info/dependency_links.txt
+grapefruit.egg-info/requires.txt
+grapefruit.egg-info/top_level.txt
