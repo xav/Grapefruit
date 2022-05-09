@@ -5,6 +5,17 @@ python:
   - "3.4"
   - "3.5"
   - "nightly"
+
+# jobs for ppc64le tests  
+job:
+  include:
+    - arch: ppc64le
+      python: 2.7
+    - arch: ppc64le
+      python: 3.8
+    - arch: ppc64le
+      python: 3.9-dev
+      
 # command to install dependencies
 install: "pip install coverage coveralls"
 # command to run tests
